@@ -99,7 +99,7 @@ function MessageCard({ entry, lang, index, onPhotoClick }: {
       <div className="mb-3 flex items-center justify-between">
         <span className="font-display text-base font-bold text-charcoal">{entry.name}</span>
         <span className="font-body text-[0.6rem] tracking-wider text-charcoal-muted/50">
-          {timeAgo(entry.submittedAt, lang)}
+          {timeAgo(entry.submitted_at, lang)}
         </span>
       </div>
       <p className="font-body text-sm font-light leading-relaxed text-charcoal-muted">{entry.message}</p>
