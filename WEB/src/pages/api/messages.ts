@@ -4,6 +4,7 @@ import { messageSchema } from '../../lib/message-schema';
 import { supabase } from '../../lib/supabase';
 import { verifyInviteCode } from '../../lib/verify-invite';
 import { rateLimit } from '../../lib/rate-limit';
+import { notifyWhatsApp } from '../../lib/notify';
 
 const MAX_PHOTOS = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -108,10 +109,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     if (insertError) {
       return new Response(
-        JSON.stringify({ error: insertError.message }),
+        JSON.stringify({ error: 'Error del servidor' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } },
       );
     }
+
+    const photoText = savedPhotos.length > 0 ? `\n📷 ${savedPhotos.length} foto(s)` : '';
+    notifyWhatsApp(`💌 Nuevo mensaje en el guestbook\n👤 ${entry.name}\n🔒 ${entry.visibility === 'private' ? 'Privado' : 'Público'}\n💬 ${entry.message}${photoText}`);
 
     return new Response(
       JSON.stringify({ entry }),

@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { supabase } from '../../lib/supabase';
 import { verifyInviteCode } from '../../lib/verify-invite';
 import { rateLimit } from '../../lib/rate-limit';
+import { notifyWhatsApp } from '../../lib/notify';
 
 const songSchema = z.object({
   song: z.string().min(1).max(200),
@@ -58,6 +59,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         status: 500, headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    notifyWhatsApp(`🎵 Nueva canción sugerida\n🎶 ${entry.song}\n🎤 ${entry.artist}`);
 
     return new Response(JSON.stringify({ success: true, entry }), {
       status: 201, headers: { 'Content-Type': 'application/json' },

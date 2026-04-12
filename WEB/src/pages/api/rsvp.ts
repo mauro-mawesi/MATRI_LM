@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { supabase } from '../../lib/supabase';
 import { verifyInviteCode } from '../../lib/verify-invite';
 import { rateLimit } from '../../lib/rate-limit';
+import { notifyWhatsApp } from '../../lib/notify';
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
@@ -56,6 +57,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         status: 500, headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    notifyWhatsApp(`📋 Actualización de asistencia\n👤 ${entry.name}\n📧 ${entry.email}\n✅ Asiste: ${entry.attending ? 'Sí' : 'No'}\n👥 Acompañantes: ${entry.guests}\n🍽️ Dieta: ${entry.dietary || 'N/A'}\n💬 ${entry.message || 'Sin mensaje'}`);
 
     return new Response(JSON.stringify({ success: true, entry }), {
       status: 201, headers: { 'Content-Type': 'application/json' },
