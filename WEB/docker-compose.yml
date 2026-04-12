@@ -4,6 +4,8 @@ services:
       context: .
     container_name: wedding-landing
     restart: unless-stopped
+    volumes:
+      - /home/mauricio/.ssh/id_rsa:/home/mauricio/.ssh/id_rsa:ro
     networks:
       - supabase_default
     environment:

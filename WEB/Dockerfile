@@ -12,6 +12,7 @@ RUN pnpm build
 
 # Runtime stage
 FROM node:20-alpine AS runtime
+RUN apk add --no-cache openssh-client
 WORKDIR /app
 
 COPY --from=build /app/dist ./dist
