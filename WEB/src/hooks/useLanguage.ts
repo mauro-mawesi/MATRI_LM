@@ -15,7 +15,13 @@ function getStoredLang(): Lang {
 }
 
 export function useLanguage() {
-  const [lang, setLangState] = useState<Lang>(getStoredLang);
+  const [lang, setLangState] = useState<Lang>(defaultLang);
+
+  // Hydrate from localStorage on client
+  useEffect(() => {
+    const stored = getStoredLang();
+    if (stored !== defaultLang) setLangState(stored);
+  }, []);
 
   const setLang = useCallback((newLang: Lang) => {
     setLangState(newLang);

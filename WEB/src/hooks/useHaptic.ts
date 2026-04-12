@@ -4,13 +4,22 @@ import { useReducedMotion } from './useMediaQuery';
 export function useHaptic() {
   const reducedMotion = useReducedMotion();
   const supported = useRef(false);
+  const userInteracted = useRef(false);
 
   useEffect(() => {
     supported.current = 'vibrate' in navigator;
+
+    const markInteracted = () => { userInteracted.current = true; };
+    document.addEventListener('click', markInteracted, { once: true });
+    document.addEventListener('touchstart', markInteracted, { once: true });
+    return () => {
+      document.removeEventListener('click', markInteracted);
+      document.removeEventListener('touchstart', markInteracted);
+    };
   }, []);
 
   const vibrate = useCallback((pattern: number | number[]) => {
-    if (supported.current && !reducedMotion) {
+    if (supported.current && !reducedMotion && userInteracted.current) {
       navigator.vibrate(pattern);
     }
   }, [reducedMotion]);
