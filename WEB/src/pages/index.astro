@@ -13,7 +13,7 @@ import CountdownTimer from '../components/react/CountdownTimer.tsx';
 import LoveTimeline from '../components/react/LoveTimeline.tsx';
 import VenueMap from '../components/react/VenueMap.tsx';
 import PhotoGallery from '../components/react/PhotoGallery.tsx';
-import PhotoShare from '../components/react/PhotoShare.tsx';
+import RsvpForm from '../components/react/RsvpForm.tsx';
 import GiftAccounts from '../components/react/GiftAccounts.tsx';
 import MusicPlaylist from '../components/react/MusicPlaylist.tsx';
 import Guestbook from '../components/react/Guestbook.tsx';
@@ -105,11 +105,11 @@ import Preloader from '../components/react/Preloader.tsx';
 
   <SectionDivider variant="ornament" />
 
-  <!-- Photo Share Block (Post-RSVP) -->
+  <!-- Attendance Update -->
   <Section id="rsvp" bg="gradient">
     <FloralDecorations variant="scattered" color="text-gold/[0.08]" client:visible />
     <div class="relative z-10 glass-panel p-8 md:p-12 max-w-4xl mx-auto rounded-xl">
-      <PhotoShare client:visible />
+      <InviteCodeGate client:visible><RsvpForm client:visible /></InviteCodeGate>
     </div>
   </Section>
 

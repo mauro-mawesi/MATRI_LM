@@ -89,6 +89,16 @@ export default function RsvpForm() {
         />
       </div>
 
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.25, ease: [0.19, 1, 0.22, 1] }}
+        className="mb-8 rounded-xl border border-gold/10 bg-white/70 px-5 py-4 font-body text-sm font-light leading-relaxed text-charcoal-muted backdrop-blur-sm"
+      >
+        {t('rsvp.note')}
+      </motion.p>
+
       <div className="space-y-6">
         {/* Name - slides from left */}
         <motion.div
@@ -174,31 +184,11 @@ export default function RsvpForm() {
             transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
             className="space-y-6 overflow-hidden"
           >
-            {/* Guests - slides from left */}
+            {/* Dietary - slides from right */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15, duration: 0.5 }}
-            >
-              <label htmlFor="rsvp-guests" className="font-body mb-2 block text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
-                {t('rsvp.guests')}
-              </label>
-              <select
-                id="rsvp-guests"
-                name="guests"
-                className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal transition-colors focus:border-gold focus:outline-none sm:text-sm"
-              >
-                {[0, 1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-            </motion.div>
-
-            {/* Dietary - slides from right */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.25, duration: 0.5 }}
             >
               <label htmlFor="rsvp-dietary" className="font-body mb-2 block text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
                 {t('rsvp.dietary')}
@@ -227,7 +217,7 @@ export default function RsvpForm() {
           <textarea
             id="rsvp-message"
             name="message"
-            rows={3}
+            rows={4}
             placeholder={t('rsvp.message.placeholder')}
             className="w-full resize-none border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal placeholder:text-charcoal-muted/40 transition-colors focus:border-gold focus:outline-none sm:text-sm"
           />

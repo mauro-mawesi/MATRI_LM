@@ -35,7 +35,7 @@ export default function RsvpConfirmation({ onClose }: Props) {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        &larr;
+        {t('rsvp.close')}
       </motion.button>
     </motion.div>
   );
