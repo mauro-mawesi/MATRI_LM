@@ -22,6 +22,7 @@ import DressCodeModal from '../components/react/DressCodeModal.tsx';
 import FloralDecorations from '../components/react/FloralDecorations.tsx';
 import { FloralDivider } from '../components/react/FloralDecorations.tsx';
 import ScrollProgressBar from '../components/react/ScrollProgressBar.tsx';
+import InviteCodeGate from '../components/react/InviteCodeGate.tsx';
 
 import { events } from '../config/events';
 import Preloader from '../components/react/Preloader.tsx';
@@ -118,7 +119,7 @@ import Preloader from '../components/react/Preloader.tsx';
   <Section id="guestbook" bg="ivory">
     <FloralDecorations variant="section-left" client:visible />
     <div class="relative z-10">
-      <Guestbook client:visible />
+      <InviteCodeGate client:visible><Guestbook client:visible /></InviteCodeGate>
     </div>
   </Section>
 
@@ -154,7 +155,7 @@ import Preloader from '../components/react/Preloader.tsx';
   <Section id="music" bg="white">
     <FloralDecorations variant="section-right" color="text-sage/[0.12]" client:visible />
     <div class="relative z-10">
-      <MusicPlaylist client:visible />
+      <InviteCodeGate client:visible><MusicPlaylist client:visible /></InviteCodeGate>
     </div>
   </Section>
 

@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { nanoid } from 'nanoid';
 import { messageSchema } from '../../lib/message-schema';
 import { supabase } from '../../lib/supabase';
+import { verifyInviteCode } from '../../lib/verify-invite';
 
 const MAX_PHOTOS = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -27,6 +28,9 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const denied = await verifyInviteCode(request);
+  if (denied) return denied;
+
   try {
     const formData = await request.formData();
 

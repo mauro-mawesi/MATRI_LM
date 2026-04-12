@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { rsvpSchema } from '../../lib/rsvp-schema';
 import { nanoid } from 'nanoid';
 import { supabase } from '../../lib/supabase';
+import { verifyInviteCode } from '../../lib/verify-invite';
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
@@ -21,6 +22,9 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const denied = await verifyInviteCode(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const result = rsvpSchema.safeParse(body);

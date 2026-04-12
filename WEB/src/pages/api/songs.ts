@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 import { supabase } from '../../lib/supabase';
+import { verifyInviteCode } from '../../lib/verify-invite';
 
 const songSchema = z.object({
   song: z.string().min(1).max(200),
@@ -26,6 +27,9 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const denied = await verifyInviteCode(request);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const result = songSchema.safeParse(body);

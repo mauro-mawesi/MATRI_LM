@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { authedFetch } from '../../lib/authed-fetch';
 
 interface Song {
   id: string;
@@ -40,7 +41,7 @@ export default function MusicPlaylist() {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/songs', {
+      const res = await authedFetch('/api/songs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ song, artist }),

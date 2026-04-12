@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
 import type { MessageEntry } from '../../lib/message-schema';
+import { authedFetch } from '../../lib/authed-fetch';
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || 'http://172.28.18.200:8001';
 
@@ -240,7 +241,7 @@ export default function Guestbook() {
     }
 
     try {
-      const res = await fetch('/api/messages', { method: 'POST', body: formData });
+      const res = await authedFetch('/api/messages', { method: 'POST', body: formData });
       if (res.ok) {
         const data = await res.json();
         if (visibility === 'public') {

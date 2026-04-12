@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { rsvpSchema } from '../../lib/rsvp-schema';
 import RsvpConfirmation from './RsvpConfirmation';
+import { authedFetch } from '../../lib/authed-fetch';
 
 export default function RsvpForm() {
   const { t } = useLanguage();
@@ -39,7 +40,7 @@ export default function RsvpForm() {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/rsvp', {
+      const res = await authedFetch('/api/rsvp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(result.data),
