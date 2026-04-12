@@ -29,8 +29,8 @@ export default function PhotoGallery() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, mass: 0.5, stiffness: 100 });
-  const scrollRange = photos.length > 0 ? `${Math.min(80, photos.length * 12)}%` : '0%';
-  const x = useTransform(smoothProgress, [0, 1], ['0%', `-${scrollRange}`]);
+  const scrollRange = photos.length > 0 ? Math.min(85, photos.length * 25) : 0;
+  const x = useTransform(smoothProgress, [0, 1], ['0%', `-${scrollRange}%`]);
 
   if (photos.length === 0) {
     return (
@@ -78,17 +78,17 @@ export default function PhotoGallery() {
           </motion.h2>
         </div>
 
-        <motion.div style={{ x }} className="flex gap-8 pl-[10vw] pr-[50vw]">
+        <motion.div style={{ x }} className="flex items-center gap-6 sm:gap-8 pl-[10vw] pr-[50vw]">
           {photos.map((photo, index) => {
-            const isEven = index % 2 === 0;
-            const extraOffset = isEven ? 'mt-40' : 'mb-40';
+            // First photo: no offset. Others: alternate up/down
+            const offset = index === 0 ? '' : index % 2 === 0 ? '-translate-y-12 md:-translate-y-20' : 'translate-y-12 md:translate-y-20';
 
             return (
               <motion.button
                 type="button"
                 key={photo.id}
                 onClick={() => setSelected(photo.id)}
-                className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl w-[70vw] md:w-[35vw] h-[55vh] transition-all duration-700 ${extraOffset}`}
+                className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl w-[75vw] sm:w-[60vw] md:w-[35vw] h-[50vh] md:h-[55vh] transition-all duration-700 ${offset}`}
                 whileHover={{ scale: 1.05 }}
               >
                 <img
