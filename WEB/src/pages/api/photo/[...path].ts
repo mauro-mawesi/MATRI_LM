@@ -42,10 +42,13 @@ export const GET: APIRoute = async ({ params }) => {
     png: 'image/png', webp: 'image/webp', gif: 'image/gif',
   };
 
-  return new Response(data, {
+  const buffer = new Uint8Array(await data.arrayBuffer());
+
+  return new Response(buffer, {
     status: 200,
     headers: {
       'Content-Type': contentTypes[ext] || 'application/octet-stream',
+      'Content-Length': String(buffer.byteLength),
       'Cache-Control': 'public, max-age=86400, immutable',
     },
   });
