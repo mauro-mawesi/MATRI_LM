@@ -173,10 +173,11 @@ function DesktopGallery({ photos, t, onSelect }: {
   const { scrollYProgress } = useScroll({ target: targetRef });
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, mass: 0.5, stiffness: 100 });
   const scrollRange = Math.min(85, photos.length * 25);
+  const containerHeight = `${100 + photos.length * 50}vh`; // 1 screen + 50vh per photo
   const x = useTransform(smoothProgress, [0, 1], ['0%', `-${scrollRange}%`]);
 
   return (
-    <div ref={targetRef} className="relative h-[300vh]">
+    <div ref={targetRef} className="relative" style={{ height: containerHeight }}>
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <div className="pt-16 pb-4">
           <GalleryHeader t={t} />
