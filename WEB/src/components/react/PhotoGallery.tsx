@@ -80,7 +80,6 @@ export default function PhotoGallery() {
 
         <motion.div style={{ x }} className="flex items-center gap-6 sm:gap-8 pl-[10vw] pr-[50vw]">
           {photos.map((photo, index) => {
-            // First photo: no offset. Others: alternate up/down
             const offset = index === 0 ? '' : index % 2 === 0 ? '-translate-y-12 md:-translate-y-20' : 'translate-y-12 md:translate-y-20';
 
             return (
@@ -88,13 +87,13 @@ export default function PhotoGallery() {
                 type="button"
                 key={photo.id}
                 onClick={() => setSelected(photo.id)}
-                className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl w-[75vw] sm:w-[60vw] md:w-[35vw] h-[50vh] md:h-[55vh] transition-all duration-700 ${offset}`}
+                className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl h-[50vh] md:h-[60vh] transition-all duration-700 ${offset}`}
                 whileHover={{ scale: 1.05 }}
               >
                 <img
                   src={photo.src}
                   alt={photo.name}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="h-full w-auto max-w-[85vw] md:max-w-[45vw] object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-charcoal/20 transition-opacity duration-500 group-hover:opacity-0" />
