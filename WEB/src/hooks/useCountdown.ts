@@ -8,8 +8,10 @@ interface CountdownValues {
   isComplete: boolean;
 }
 
+const INITIAL: CountdownValues = { days: 0, hours: 0, minutes: 0, seconds: 0, isComplete: false };
+
 export function useCountdown(targetDate: Date): CountdownValues {
-  const [countdown, setCountdown] = useState<CountdownValues>(() => calculate(targetDate));
+  const [countdown, setCountdown] = useState<CountdownValues>(INITIAL);
 
   useEffect(() => {
     const interval = setInterval(() => {
