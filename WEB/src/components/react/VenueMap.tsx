@@ -42,10 +42,9 @@ export default function VenueMap() {
   }
 
   const { MapContainer, TileLayer, Marker, Popup } = MapComponents;
-  const center: [number, number] = [
-    (events[0].coordinates[0] + events[1].coordinates[0]) / 2,
-    (events[0].coordinates[1] + events[1].coordinates[1]) / 2,
-  ];
+  const center: [number, number] = events.length > 1
+    ? [(events[0].coordinates[0] + events[1].coordinates[0]) / 2, (events[0].coordinates[1] + events[1].coordinates[1]) / 2]
+    : events[0].coordinates;
 
   return (
     <>
