@@ -10,7 +10,7 @@ export default function GiftAccounts() {
     bank: 'Bancolombia',
     accountPrefix: 'Ahorros',
     account: '51421866761',
-    titular: 'Laura o Mauro',
+    titular: 'Laura Realpe',
   };
 
   const handleCopy = () => {

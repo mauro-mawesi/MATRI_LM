@@ -4,7 +4,7 @@ const OPENCLAW_HOST = '172.28.18.89';
 const OPENCLAW_USER = 'mauricio';
 const OPENCLAW_BIN = '/home/mauricio/.npm-global/bin/openclaw';
 const SSH_KEY = '/home/mauricio/.ssh/id_rsa';
-const WHATSAPP_TARGETS = ['+573174377422', '+573174377423']; // Laura & Mauro
+const WHATSAPP_TARGETS = ['+573174377422', '+31623825981']; // Laura & Mauro
 
 /**
  * Sends a WhatsApp notification via OpenClaw to all targets.
