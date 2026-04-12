@@ -46,7 +46,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       submitted_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase.from('rsvps').insert(entry);
+    // Upsert: update if email exists, insert if new
+    const { error } = await supabase.from('rsvps').upsert(entry, { onConflict: 'email' });
 
     if (error) {
       return new Response(JSON.stringify({ error: 'Error del servidor' }), {
