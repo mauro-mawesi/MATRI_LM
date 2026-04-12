@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useHaptic } from '../../hooks/useHaptic';
+import { useReducedMotion } from '../../hooks/useMediaQuery';
 import { siteConfig } from '../../config/site';
 import FloralDecorations from './FloralDecorations';
 import SignatureSVG from './SignatureSVG';
@@ -57,18 +59,48 @@ function DateBlock({ day, dateShort, year, time }: {
 
 export default function HeroAnimation() {
   const { t } = useLanguage();
+  const { tap } = useHaptic();
+  const reducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLElement>(null);
+  const lastBurstRef = useRef(0);
 
   // Scroll parallax (reduced range for elegance)
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 80]);
   const opacity = useTransform(scrollY, [0, 350], [1, 0]);
 
+  // Tap-to-petal-burst
+  const PETAL_COLORS = ['#D4AF37', '#F3E5AB', '#F2DBD9', '#DFA8A8', '#9CAF88', '#C8D6B9'];
+
+  const handleHeroPetalBurst = useCallback(async (e: React.MouseEvent) => {
+    if (reducedMotion) return;
+    const target = e.target as HTMLElement;
+    if (target.closest('a, button')) return;
+
+    const now = Date.now();
+    if (now - lastBurstRef.current < 800) return;
+    lastBurstRef.current = now;
+
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+
+    try {
+      const confettiModule = await import('canvas-confetti');
+      const confetti = confettiModule.default;
+      const origin = { x, y };
+
+      confetti({ particleCount: 25, spread: 55, origin, colors: PETAL_COLORS.slice(0, 3), scalar: 0.9, gravity: 0.6, ticks: 200 });
+      setTimeout(() => confetti({ particleCount: 20, spread: 40, angle: 75, origin, colors: PETAL_COLORS.slice(2, 5), scalar: 0.7, gravity: 0.5, ticks: 250 }), 150);
+      setTimeout(() => confetti({ particleCount: 15, spread: 35, angle: 105, origin, colors: PETAL_COLORS.slice(3), scalar: 0.6, gravity: 0.4, drift: 1, ticks: 300 }), 300);
+    } catch { /* canvas-confetti not available */ }
+  }, [reducedMotion]);
+
   return (
     <section
       ref={containerRef}
       id="home"
       className="bg-gradient-hero relative flex min-h-[100vh] flex-col items-center justify-center overflow-hidden px-6 pt-20"
+      onClick={handleHeroPetalBurst}
     >
       {/* Botanical corners + gold glitter */}
       <FloralDecorations variant="hero-corners" intensity="medium" />
@@ -188,6 +220,7 @@ export default function HeroAnimation() {
           <a
             href="#rsvp"
             className="group relative inline-block overflow-hidden rounded-sm border border-gold/40 px-10 py-4 transition-all duration-500 hover:border-gold"
+            onPointerDown={() => tap()}
           >
             <span className="relative z-10 font-body text-xs font-medium uppercase tracking-[0.25em] text-charcoal-light transition-colors group-hover:text-gold">
               {t('hero.cta')}

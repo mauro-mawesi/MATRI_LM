@@ -16,6 +16,7 @@ import PhotoGallery from '../components/react/PhotoGallery.tsx';
 import PhotoShare from '../components/react/PhotoShare.tsx';
 import GiftAccounts from '../components/react/GiftAccounts.tsx';
 import MusicPlaylist from '../components/react/MusicPlaylist.tsx';
+import Guestbook from '../components/react/Guestbook.tsx';
 import ConfettiExplosion from '../components/react/ConfettiExplosion.tsx';
 import DressCodeModal from '../components/react/DressCodeModal.tsx';
 import FloralDecorations from '../components/react/FloralDecorations.tsx';
@@ -111,6 +112,16 @@ import Preloader from '../components/react/Preloader.tsx';
     </div>
   </Section>
 
+  <SectionDivider variant="floral" />
+
+  <!-- Guestbook -->
+  <Section id="guestbook" bg="ivory">
+    <FloralDecorations variant="section-left" client:visible />
+    <div class="relative z-10">
+      <Guestbook client:visible />
+    </div>
+  </Section>
+
   <FloralDivider client:visible />
 
   <!-- Gift Registry Bento -->
@@ -171,6 +182,7 @@ import Preloader from '../components/react/Preloader.tsx';
   // ─── Scroll-Triggered CSS Animations (IntersectionObserver) ───
   const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-line-expand');
 
+  const isMobile = window.innerWidth < 768;
   const scrollObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -181,8 +193,8 @@ import Preloader from '../components/react/Preloader.tsx';
       });
     },
     {
-      threshold: 0.15,
-      rootMargin: '-40px 0px',
+      threshold: isMobile ? 0.08 : 0.15,
+      rootMargin: isMobile ? '-20px 0px' : '-40px 0px',
     }
   );
 

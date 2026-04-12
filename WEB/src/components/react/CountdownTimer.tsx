@@ -1,7 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useHaptic } from '../../hooks/useHaptic';
 import { siteConfig } from '../../config/site';
 
 function TimeUnit({ value, label, index }: { value: number; label: string; index: number }) {
@@ -52,7 +53,16 @@ function TimeUnit({ value, label, index }: { value: number; label: string; index
 export default function CountdownTimer() {
   const { days, hours, minutes, seconds, isComplete } = useCountdown(siteConfig.date);
   const { t } = useLanguage();
+  const { doubleTap } = useHaptic();
   const ref = useRef<HTMLDivElement>(null);
+  const prevSeconds = useRef(seconds);
+
+  useEffect(() => {
+    if (prevSeconds.current !== seconds) {
+      prevSeconds.current = seconds;
+      doubleTap();
+    }
+  }, [seconds, doubleTap]);
 
   const { scrollYProgress } = useScroll({
     target: ref,

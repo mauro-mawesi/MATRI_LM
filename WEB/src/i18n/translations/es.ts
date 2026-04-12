@@ -76,6 +76,24 @@ export const es = {
   'gifts.subtitle': 'Tu presencia es nuestro mejor regalo, pero si deseas obsequiarnos algo...',
   'gifts.view': 'Ver Tienda',
 
+  // Guestbook
+  'guestbook.subtitle': 'Déjanos un recuerdo',
+  'guestbook.title': 'Nuestro Libro de Mensajes',
+  'guestbook.name': 'Tu nombre',
+  'guestbook.message': 'Tu mensaje',
+  'guestbook.placeholder': 'Cuéntanos cómo nos conociste, una experiencia especial, o simplemente déjanos unas palabras...',
+  'guestbook.public': 'Público',
+  'guestbook.private': 'Privado',
+  'guestbook.photos': 'Agregar fotos',
+  'guestbook.photosHint': 'Máx. 3 fotos',
+  'guestbook.submit': 'Enviar Mensaje',
+  'guestbook.submitting': 'Enviando...',
+  'guestbook.success': '¡Gracias por tu mensaje! 💛',
+  'guestbook.error': 'Hubo un error. Por favor intenta de nuevo.',
+  'guestbook.recent': 'Mensajes de nuestros invitados',
+  'guestbook.empty': 'Sé el primero en dejarnos un mensaje',
+  'guestbook.privateNote': 'Solo Laura & Mauro lo verán',
+
   // Music
   'music.title': 'La Playlist de la Fiesta',
   'music.subtitle': '¿Qué canción no puede faltar?',

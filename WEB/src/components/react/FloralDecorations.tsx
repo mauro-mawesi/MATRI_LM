@@ -1,5 +1,7 @@
 import { useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useDeviceOrientation } from '../../hooks/useDeviceOrientation';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /* ─── Seeded random for SSR consistency ─── */
 function seededRandom(seed: number) {
@@ -278,9 +280,21 @@ export default function FloralDecorations({ variant, intensity = 'subtle' }: Flo
     offset: ['start end', 'end start'],
   });
 
+  const isMobile = useIsMobile();
+  const { beta, gamma, permissionState, requestPermission } = useDeviceOrientation();
+
+  // Gyroscope parallax: map lateral tilt to horizontal pixel offset
+  const gyroX = useTransform(gamma, [-45, 45], [-12, 12]);
+
+  // Per-corner gyro multipliers for depth (horizontal tilt only — vertical is handled by scroll)
+  const gyroTL_X = useTransform(gyroX, (v) => v * 1.0);
+  const gyroTR_X = useTransform(gyroX, (v) => v * -0.8);
+  const gyroBL_X = useTransform(gyroX, (v) => v * 0.6);
+  const gyroBR_X = useTransform(gyroX, (v) => v * -0.6);
+
   const opacityBase = intensity === 'subtle' ? 0.7 : 1;
 
-  // Parallax transforms at different speeds
+  // Scroll parallax transforms
   const y1 = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const y2 = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const y3 = useTransform(scrollYProgress, [0, 1], [20, -30]);
@@ -290,30 +304,41 @@ export default function FloralDecorations({ variant, intensity = 'subtle' }: Flo
   if (variant === 'hero-corners') {
     return (
       <div ref={ref} className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {/* iOS gyro permission prompt */}
+        {isMobile && permissionState === 'prompt' && (
+          <button
+            type="button"
+            onClick={requestPermission}
+            className="pointer-events-auto absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full border border-gold/30 bg-ivory/90 px-5 py-2 font-body text-[0.6rem] uppercase tracking-[0.2em] text-gold backdrop-blur-sm transition-all duration-300 active:scale-95"
+          >
+            Toca para efecto de inclinación
+          </button>
+        )}
+
         {/* Top-left cluster */}
         <motion.div
-          style={{ y: y1, rotate: rotate1, opacity: opacityBase }}
+          style={{ y: y1, x: gyroTL_X, rotate: rotate1, opacity: opacityBase }}
           className="absolute -left-8 -top-8 md:left-0 md:top-0"
         >
           <WatercolorLeafCluster className="h-52 w-auto md:h-72 lg:h-80" />
         </motion.div>
         {/* Top-right cluster */}
         <motion.div
-          style={{ y: y2, rotate: rotate2, opacity: opacityBase }}
+          style={{ y: y2, x: gyroTR_X, rotate: rotate2, opacity: opacityBase }}
           className="absolute -right-8 -top-8 md:right-0 md:top-0"
         >
           <WatercolorLeafCluster className="h-52 w-auto md:h-72 lg:h-80" flip />
         </motion.div>
         {/* Bottom-left */}
         <motion.div
-          style={{ y: y3, opacity: opacityBase * 0.85 }}
+          style={{ y: y3, x: gyroBL_X, opacity: opacityBase * 0.85 }}
           className="absolute -bottom-12 -left-6 rotate-180 md:left-0"
         >
           <WatercolorLeafCluster className="h-44 w-auto md:h-60 lg:h-68" />
         </motion.div>
         {/* Bottom-right */}
         <motion.div
-          style={{ y: y1, opacity: opacityBase * 0.85 }}
+          style={{ y: y1, x: gyroBR_X, opacity: opacityBase * 0.85 }}
           className="absolute -bottom-12 -right-6 rotate-180 md:right-0"
         >
           <WatercolorLeafCluster className="h-44 w-auto md:h-60 lg:h-68" flip />

@@ -193,6 +193,20 @@ body::before {
   transition: opacity 0.8s var(--ease-cinematic), transform 0.8s var(--ease-cinematic);
 }
 
+/* Mobile: premium reveals with blur + scale */
+@media (max-width: 767px) {
+  .scroll-reveal {
+    transform: translateY(20px) scale(0.97);
+    filter: blur(4px);
+    transition: opacity 0.8s var(--ease-cinematic),
+                transform 0.8s var(--ease-cinematic),
+                filter 0.8s var(--ease-cinematic);
+  }
+  .scroll-reveal.is-visible {
+    filter: blur(0px);
+  }
+}
+
 .scroll-reveal.scroll-reveal-left {
   transform: translateX(-40px);
 }

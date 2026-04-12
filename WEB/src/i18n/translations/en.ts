@@ -78,6 +78,24 @@ export const en: Record<TranslationKey, string> = {
   'gifts.subtitle': 'Your presence is our greatest gift, but if you wish to give us something...',
   'gifts.view': 'View Store',
 
+  // Guestbook
+  'guestbook.subtitle': 'Leave us a memory',
+  'guestbook.title': 'Our Guestbook',
+  'guestbook.name': 'Your name',
+  'guestbook.message': 'Your message',
+  'guestbook.placeholder': 'Tell us how we met, a special experience, or just leave us a few words...',
+  'guestbook.public': 'Public',
+  'guestbook.private': 'Private',
+  'guestbook.photos': 'Add photos',
+  'guestbook.photosHint': 'Max. 3 photos',
+  'guestbook.submit': 'Send Message',
+  'guestbook.submitting': 'Sending...',
+  'guestbook.success': 'Thank you for your message! 💛',
+  'guestbook.error': 'Something went wrong. Please try again.',
+  'guestbook.recent': 'Messages from our guests',
+  'guestbook.empty': 'Be the first to leave us a message',
+  'guestbook.privateNote': 'Only Laura & Mauro will see this',
+
   // Music
   'music.title': 'Party Playlist',
   'music.subtitle': 'What song should we play?',
