@@ -175,7 +175,12 @@ function DesktopGallery({ photos, t, onSelect }: {
     offset: ["start start", "end end"] 
   });
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, mass: 0.5, stiffness: 100 });
-  const containerHeight = `${100 + photos.length * 50}vh`; // 1 screen + 50vh per photo
+  
+  // Dynamic height ensuring 1:1 feel. If few photos, don't make the user scroll needlessly.
+  const containerHeight = photos.length <= 2 
+    ? '100vh' 
+    : `${100 + photos.length * 30}vh`;
+
   const x = useTransform(smoothProgress, [0, 1], ['0%', 'calc(-100% + 100vw)']);
 
   return (
@@ -185,7 +190,7 @@ function DesktopGallery({ photos, t, onSelect }: {
           <GalleryHeader t={t} />
         </div>
 
-        <motion.div style={{ x }} className="flex flex-1 items-center gap-8 pl-[10vw] pr-[50vw] w-max">
+        <motion.div style={{ x }} className="flex flex-1 items-center gap-8 pl-[10vw] pr-[10vw] min-w-full w-max">
           {photos.map((photo, index) => (
             <PhotoCard
               key={photo.id}
