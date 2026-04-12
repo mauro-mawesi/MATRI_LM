@@ -11,5 +11,6 @@ export type MessageData = z.infer<typeof messageSchema>;
 export interface MessageEntry extends MessageData {
   id: string;
   photos: string[];
+  likes: number;
   submitted_at: string;
 }

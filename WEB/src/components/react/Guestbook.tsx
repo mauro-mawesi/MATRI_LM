@@ -82,11 +82,13 @@ function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
 }
 
 /* ─── Message Card ─── */
-function MessageCard({ entry, lang, index, onPhotoClick }: {
+function MessageCard({ entry, lang, index, onPhotoClick, onLike, isLiked }: {
   entry: MessageEntry;
   lang: string;
   index: number;
   onPhotoClick: (src: string) => void;
+  onLike: (id: string) => void;
+  isLiked: boolean;
 }) {
   return (
     <motion.div
@@ -123,6 +125,33 @@ function MessageCard({ entry, lang, index, onPhotoClick }: {
           ))}
         </div>
       )}
+
+      {/* Like button */}
+      <div className="mt-4 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => !isLiked && onLike(entry.id)}
+          disabled={isLiked}
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 font-body text-[0.65rem] transition-all duration-300 ${
+            isLiked
+              ? 'bg-gold/10 text-gold'
+              : 'text-charcoal-muted/40 hover:bg-gold/5 hover:text-gold active:scale-95'
+          }`}
+        >
+          <svg
+            className={`h-3.5 w-3.5 transition-transform duration-300 ${isLiked ? 'scale-110' : ''}`}
+            viewBox="0 0 24 24"
+            fill={isLiked ? 'currentColor' : 'none'}
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+          {entry.likes > 0 && (
+            <span>{entry.likes}</span>
+          )}
+        </button>
+      </div>
     </motion.div>
   );
 }
@@ -138,6 +167,7 @@ export default function Guestbook() {
   const [photos, setPhotos] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load public messages
@@ -146,6 +176,33 @@ export default function Guestbook() {
       .then((r) => r.json())
       .then((data) => setMessages(data.messages ?? []))
       .catch(() => {});
+
+    // Restore liked messages from localStorage
+    try {
+      const stored = JSON.parse(localStorage.getItem('wedding-liked-messages') || '[]');
+      setLikedIds(new Set(stored));
+    } catch { /* ignore */ }
+  }, []);
+
+  // Handle like
+  const handleLike = useCallback(async (id: string) => {
+    try {
+      const res = await fetch('/api/messages/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        const { likes } = await res.json();
+        setMessages((prev) => prev.map((m) => m.id === id ? { ...m, likes } : m));
+        setLikedIds((prev) => {
+          const next = new Set(prev);
+          next.add(id);
+          localStorage.setItem('wedding-liked-messages', JSON.stringify([...next]));
+          return next;
+        });
+      }
+    } catch { /* silent */ }
   }, []);
 
   // Handle photo selection
@@ -432,6 +489,8 @@ export default function Guestbook() {
                   lang={lang}
                   index={i}
                   onPhotoClick={setLightboxSrc}
+                  onLike={handleLike}
+                  isLiked={likedIds.has(entry.id)}
                 />
               ))}
             </div>
