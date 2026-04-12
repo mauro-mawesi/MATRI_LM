@@ -5,24 +5,28 @@ import { useLanguage } from '../../hooks/useLanguage';
 
 const content = {
   es: {
-    trigger: 'Casual Elegante',
-    triggerHint: '(ver guía)',
-    title: 'Casual Elegante',
+    triggerLabel: 'Dress code',
+    trigger: 'Colorful, elegant & garden-inspired',
+    triggerHint: 'Toca para ver referencias',
+    triggerAction: 'Ver guía visual',
+    title: 'Colorful, elegant & garden-inspired',
     subtitle: 'Guía de Vestimenta',
     description:
-      'Queremos que te sientas cómodo y a la vez elegante. Piensa en un look sofisticado pero relajado.',
+      'Queremos que te sientas cómodo, elegante y con un toque fresco de jardín. Piensa en colores con vida, siluetas cuidadas y un look sofisticado pero relajado.',
     tabs: { women: 'Ella', men: 'Él' },
     note: 'Evitar: jeans, zapatillas deportivas, shorts o camisetas informales.',
     close: 'Entendido',
     scrollHint: 'Desliza para ver más',
   },
   en: {
-    trigger: 'Smart Casual',
-    triggerHint: '(see guide)',
-    title: 'Smart Casual',
+    triggerLabel: 'Dress code',
+    trigger: 'Colorful, elegant & garden-inspired',
+    triggerHint: 'Tap to see outfit references',
+    triggerAction: 'Open visual guide',
+    title: 'Colorful, elegant & garden-inspired',
     subtitle: 'Dress Code Guide',
     description:
-      'We want you to feel comfortable yet elegant. Think sophisticated but relaxed.',
+      'We want you to feel comfortable, elegant, and fresh with a garden-inspired touch. Think lively colors, polished silhouettes, and a sophisticated but relaxed look.',
     tabs: { women: 'Her', men: 'Him' },
     note: 'Please avoid: jeans, sneakers, shorts, or casual t-shirts.',
     close: 'Got it',
@@ -245,21 +249,46 @@ export default function DressCodeModal() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="group relative inline-flex flex-col items-center justify-center overflow-hidden rounded-xl bg-ivory-warm px-8 py-5 shadow-sm border border-gold/15 transition-all duration-500 hover:shadow-xl hover:-translate-y-1 hover:border-gold/40"
+        className="group relative inline-flex min-w-[320px] max-w-[92vw] flex-col items-start justify-center overflow-hidden rounded-2xl border border-gold/20 bg-[linear-gradient(135deg,rgba(255,253,249,0.96),rgba(242,219,217,0.75)_55%,rgba(252,250,247,0.98))] px-6 py-5 text-left shadow-[0_18px_50px_-35px_rgba(30,30,30,0.35)] transition-all duration-500 hover:-translate-y-1 hover:border-gold/45 hover:shadow-[0_26px_70px_-35px_rgba(212,175,55,0.35)] md:min-w-[420px] md:px-7 md:py-6"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-blush/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="relative z-10 flex items-center gap-3">
-          <svg className="w-6 h-6 text-gold mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 21v-8m0 0V3m0 10h9m-9 0H3m2 3h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          <div className="flex flex-col items-start">
-            <span className="font-body text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
-              {t.subtitle}
-            </span>
-            <span className="font-display text-xl font-bold text-charcoal transition-colors group-hover:text-gold-dark mt-0.5">
-              {t.trigger}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.14),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(156,175,136,0.16),transparent_38%)] opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute right-4 top-4 hidden h-16 w-16 rounded-full border border-white/40 bg-white/35 blur-[0.5px] md:block" />
+
+        <div className="relative z-10 flex w-full items-start justify-between gap-4">
+          <div className="flex min-w-0 flex-1 items-start gap-4">
+            <div className="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-white/55 text-gold shadow-sm backdrop-blur-sm">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 21v-8m0 0V3m0 10h9m-9 0H3m2 3h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+
+            <div className="min-w-0">
+              <span className="font-body text-[0.68rem] uppercase tracking-[0.28em] text-charcoal-muted/75">
+                {t.triggerLabel}
+              </span>
+              <p className="font-display mt-2 text-lg leading-tight text-charcoal md:text-[1.65rem]">
+                {t.trigger}
+              </p>
+              <p className="font-body mt-2 max-w-xl text-xs font-light leading-relaxed text-charcoal-muted/75 md:text-sm">
+                {t.triggerHint}
+              </p>
+            </div>
+          </div>
+
+          <div className="hidden shrink-0 md:flex">
+            <span className="rounded-full border border-gold/30 bg-white/55 px-4 py-2 font-body text-[0.62rem] uppercase tracking-[0.22em] text-charcoal transition-colors duration-300 group-hover:border-gold group-hover:text-gold-dark">
+              {t.triggerAction}
             </span>
           </div>
+        </div>
+
+        <div className="relative z-10 mt-5 flex w-full items-center justify-between border-t border-charcoal/8 pt-4 md:hidden">
+          <span className="font-body text-[0.62rem] uppercase tracking-[0.22em] text-charcoal-muted/75">
+            {t.triggerAction}
+          </span>
+          <svg className="h-4 w-4 text-gold transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
         </div>
       </button>
 
