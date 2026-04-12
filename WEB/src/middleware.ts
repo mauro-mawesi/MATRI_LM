@@ -3,7 +3,6 @@ import { defineMiddleware } from 'astro:middleware';
 export const onRequest = defineMiddleware(async (_context, next) => {
   const response = await next();
 
-  // Security headers
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-XSS-Protection', '1; mode=block');
@@ -19,9 +18,9 @@ export const onRequest = defineMiddleware(async (_context, next) => {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://*.supabase.co http://172.28.18.200:8001",
+      "img-src 'self' data: blob:",
       "font-src 'self'",
-      "connect-src 'self' http://172.28.18.200:8001 https://*.supabase.co",
+      "connect-src 'self'",
       "media-src 'self'",
       "frame-ancestors 'none'",
       "base-uri 'self'",

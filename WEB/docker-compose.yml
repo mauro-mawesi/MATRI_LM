@@ -1,0 +1,33 @@
+services:
+  landing:
+    build:
+      context: .
+    container_name: wedding-landing
+    restart: unless-stopped
+    networks:
+      - supabase_default
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - SUPABASE_URL=http://supabase-kong:8000
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: wedding-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - supabase_default
+    depends_on:
+      landing:
+        condition: service_healthy
+
+networks:
+  supabase_default:
+    external: true

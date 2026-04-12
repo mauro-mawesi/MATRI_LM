@@ -4,10 +4,8 @@ import { useLanguage } from '../../hooks/useLanguage';
 import type { MessageEntry } from '../../lib/message-schema';
 import { authedFetch } from '../../lib/authed-fetch';
 
-const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || 'http://172.28.18.200:8001';
-
 function photoUrl(filename: string): string {
-  return `${SUPABASE_URL}/storage/v1/object/public/guestbook-photos/${filename}`;
+  return `/api/photo/guestbook-photos/${filename}`;
 }
 
 /* ─── Client-side image compression ─── */
