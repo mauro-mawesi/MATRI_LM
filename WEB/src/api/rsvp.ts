@@ -1,31 +1,22 @@
 import type { APIRoute } from 'astro';
-import { rsvpSchema, type RsvpEntry } from '../lib/rsvp-schema';
+import { rsvpSchema } from '../lib/rsvp-schema';
 import { nanoid } from 'nanoid';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
-
-const DATA_DIR = join(process.cwd(), 'data');
-const DATA_FILE = join(DATA_DIR, 'rsvps.json');
-
-async function readRsvps(): Promise<RsvpEntry[]> {
-  try {
-    const data = await readFile(DATA_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-async function writeRsvps(entries: RsvpEntry[]): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(DATA_FILE, JSON.stringify(entries, null, 2), 'utf-8');
-}
+import { supabase } from '../lib/supabase';
 
 export const GET: APIRoute = async () => {
-  const rsvps = await readRsvps();
-  return new Response(JSON.stringify({ rsvps, total: rsvps.length }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
+  const { data, error } = await supabase
+    .from('rsvps')
+    .select('*')
+    .order('submitted_at', { ascending: false });
+
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500, headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  return new Response(JSON.stringify({ rsvps: data, total: data.length }), {
+    status: 200, headers: { 'Content-Type': 'application/json' },
   });
 };
 
@@ -41,19 +32,22 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const entry: RsvpEntry = {
-      ...result.data,
+    const entry = {
       id: nanoid(),
-      submittedAt: new Date().toISOString(),
+      ...result.data,
+      submitted_at: new Date().toISOString(),
     };
 
-    const rsvps = await readRsvps();
-    rsvps.push(entry);
-    await writeRsvps(rsvps);
+    const { error } = await supabase.from('rsvps').insert(entry);
+
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500, headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     return new Response(JSON.stringify({ success: true, entry }), {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' },
+      status: 201, headers: { 'Content-Type': 'application/json' },
     });
   } catch {
     return new Response(

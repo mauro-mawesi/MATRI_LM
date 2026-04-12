@@ -3,6 +3,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
 import type { MessageEntry } from '../../lib/message-schema';
 
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
+
+function photoUrl(filename: string): string {
+  return `${SUPABASE_URL}/storage/v1/object/public/guestbook-photos/${filename}`;
+}
+
 /* ─── Client-side image compression ─── */
 async function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File> {
   return new Promise((resolve) => {
@@ -104,11 +110,11 @@ function MessageCard({ entry, lang, index, onPhotoClick }: {
             <button
               type="button"
               key={filename}
-              onClick={() => onPhotoClick(`/api/uploads/${filename}`)}
+              onClick={() => onPhotoClick(photoUrl(filename))}
               className="h-16 w-16 overflow-hidden rounded-lg border border-gold/10 transition-all duration-300 hover:border-gold/30 hover:shadow-md"
             >
               <img
-                src={`/api/uploads/${filename}`}
+                src={photoUrl(filename)}
                 alt=""
                 className="h-full w-full object-cover"
                 loading="lazy"
