@@ -60,7 +60,7 @@ function PhotoCard({ photo, index, onClick, isMobile }: {
       className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl transition-all duration-700 ${offset}`}
       style={isMobile
         ? { width: '100%', height: '45vh' }
-        : { height: '60vh' }
+        : { height: '50vh' }
       }
       whileHover={isMobile ? undefined : { scale: 1.03 }}
     >
@@ -177,10 +177,12 @@ function DesktopGallery({ photos, t, onSelect }: {
 
   return (
     <div ref={targetRef} className="relative h-[300vh]">
-      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <GalleryHeader t={t} />
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        <div className="pt-16 pb-4">
+          <GalleryHeader t={t} />
+        </div>
 
-        <motion.div style={{ x }} className="flex items-center gap-8 pl-[10vw] pr-[50vw]">
+        <motion.div style={{ x }} className="flex flex-1 items-center gap-8 pl-[10vw] pr-[50vw]">
           {photos.map((photo, index) => (
             <PhotoCard
               key={photo.id}
