@@ -170,20 +170,22 @@ function DesktopGallery({ photos, t, onSelect }: {
 }) {
   const targetRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({ target: targetRef });
+  const { scrollYProgress } = useScroll({ 
+    target: targetRef,
+    offset: ["start start", "end end"] 
+  });
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, mass: 0.5, stiffness: 100 });
-  const scrollRange = Math.min(85, photos.length * 25);
   const containerHeight = `${100 + photos.length * 50}vh`; // 1 screen + 50vh per photo
-  const x = useTransform(smoothProgress, [0, 1], ['0%', `-${scrollRange}%`]);
+  const x = useTransform(smoothProgress, [0, 1], ['0%', 'calc(-100% + 100vw)']);
 
   return (
-    <div ref={targetRef} className="relative" style={{ height: containerHeight }}>
-      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+    <div ref={targetRef} className="relative w-full" style={{ height: containerHeight }}>
+      <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden">
         <div className="pt-16 pb-4">
           <GalleryHeader t={t} />
         </div>
 
-        <motion.div style={{ x }} className="flex flex-1 items-center gap-8 pl-[10vw] pr-[50vw]">
+        <motion.div style={{ x }} className="flex flex-1 items-center gap-8 pl-[10vw] pr-[50vw] w-max">
           {photos.map((photo, index) => (
             <PhotoCard
               key={photo.id}
