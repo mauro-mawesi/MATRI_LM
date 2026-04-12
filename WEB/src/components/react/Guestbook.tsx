@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
 import type { MessageEntry } from '../../lib/message-schema';
 
-const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || 'http://172.28.18.200:8001';
 
 function photoUrl(filename: string): string {
   return `${SUPABASE_URL}/storage/v1/object/public/guestbook-photos/${filename}`;
