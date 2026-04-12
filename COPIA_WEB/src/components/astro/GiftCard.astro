@@ -1,0 +1,59 @@
+---
+interface Props {
+  nameEs: string;
+  nameEn: string;
+  descriptionEs: string;
+  descriptionEn: string;
+  url: string;
+}
+
+const { nameEs, nameEn, descriptionEs, descriptionEn, url } = Astro.props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="scroll-reveal card-hover-lift group relative block overflow-hidden rounded-xl p-8 text-center transition-all duration-500 glass-panel"
+>
+  <div class="relative z-10">
+    <h3 class="font-display text-xl font-bold text-charcoal transition-colors group-hover:text-gold">
+      <span class="gift-text-es">{nameEs}</span>
+      <span class="gift-text-en hidden">{nameEn}</span>
+    </h3>
+
+    <div class="mx-auto mt-3 h-px w-12 bg-gold/20 transition-all duration-500 group-hover:w-24 group-hover:bg-gold scroll-line-expand origin-center"></div>
+
+    <p class="font-body mt-4 text-sm font-light leading-relaxed text-charcoal-muted">
+      <span class="gift-text-es">{descriptionEs}</span>
+      <span class="gift-text-en hidden">{descriptionEn}</span>
+    </p>
+
+    <div class="mt-6 flex items-center justify-center gap-2 font-body text-xs font-medium uppercase tracking-[0.2em] text-gold">
+      <span class="gift-text-es">Ver Tienda</span>
+      <span class="gift-text-en hidden">View Store</span>
+      <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+    </div>
+  </div>
+
+  <!-- Subtle gradient hover background -->
+  <div class="absolute inset-0 -z-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+</a>
+
+<script>
+  function updateGiftCardLang(lang: string) {
+    document.querySelectorAll('.gift-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.gift-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateGiftCardLang(e.detail);
+  }) as EventListener);
+
+  const lang = localStorage.getItem('wedding-lang') || 'es';
+  if (lang === 'en') updateGiftCardLang('en');
+</script>

@@ -1,0 +1,72 @@
+---
+interface Props {
+  titleEs: string;
+  titleEn: string;
+  time: string;
+  venue: string;
+  address: string;
+  descriptionEs: string;
+  descriptionEn: string;
+  mapUrl: string;
+}
+
+const { titleEs, titleEn, time, venue, address, descriptionEs, descriptionEn, mapUrl } = Astro.props;
+---
+
+<div class="scroll-reveal card-hover-lift group relative overflow-hidden rounded-xl p-8 transition-all duration-500 md:p-10 glass-panel">
+  <!-- Hover Glow Effect -->
+  <div class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gold/10 blur-3xl transition-opacity duration-500 opacity-0 group-hover:opacity-100"></div>
+
+  <h3 class="font-display text-3xl font-bold text-charcoal">
+    <span class="event-text-es">{titleEs}</span>
+    <span class="event-text-en hidden">{titleEn}</span>
+  </h3>
+
+  <div class="mt-4 flex items-center gap-4">
+    <div class="h-px w-12 bg-gold scroll-line-expand origin-left"></div>
+    <p class="font-body text-sm font-light uppercase tracking-[0.2em] text-gold">{time}</p>
+  </div>
+
+  <p class="font-display mt-6 text-xl font-medium text-charcoal">{venue}</p>
+  <p class="font-body mt-2 text-sm font-light text-charcoal-muted/80">{address}</p>
+
+  <div class="my-6 h-px w-full bg-charcoal/5"></div>
+
+  <p class="font-body text-sm font-light leading-relaxed text-charcoal-muted">
+    <span class="event-text-es">{descriptionEs}</span>
+    <span class="event-text-en hidden">{descriptionEn}</span>
+  </p>
+
+  <a
+    href={mapUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mt-8 inline-flex items-center gap-2 font-body text-xs font-medium uppercase tracking-[0.2em] text-gold transition-colors hover:text-gold-dark"
+  >
+    <span class="group-hover/link:underline decoration-gold/50 underline-offset-4">
+      <span class="event-text-es">Ver en el Mapa</span>
+      <span class="event-text-en hidden">View on Map</span>
+    </span>
+    <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  </a>
+</div>
+
+<script>
+  function updateEventCardLang(lang: string) {
+    document.querySelectorAll('.event-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.event-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateEventCardLang(e.detail);
+  }) as EventListener);
+
+  const lang = localStorage.getItem('wedding-lang') || 'es';
+  if (lang === 'en') updateEventCardLang('en');
+</script>

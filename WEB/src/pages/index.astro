@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/astro/Navbar.astro';
+import Section from '../components/astro/Section.astro';
+import EventCard from '../components/astro/EventCard.astro';
+import SectionDivider from '../components/astro/SectionDivider.astro';
+import Footer from '../components/astro/Footer.astro';
+
+import HeroAnimation from '../components/react/HeroAnimation.tsx';
+import LanguageToggle from '../components/react/LanguageToggle.tsx';
+import SoundToggle from '../components/react/SoundToggle.tsx';
+import CountdownTimer from '../components/react/CountdownTimer.tsx';
+import LoveTimeline from '../components/react/LoveTimeline.tsx';
+import VenueMap from '../components/react/VenueMap.tsx';
+import PhotoGallery from '../components/react/PhotoGallery.tsx';
+import PhotoShare from '../components/react/PhotoShare.tsx';
+import GiftAccounts from '../components/react/GiftAccounts.tsx';
+import MusicPlaylist from '../components/react/MusicPlaylist.tsx';
+import ConfettiExplosion from '../components/react/ConfettiExplosion.tsx';
+import DressCodeModal from '../components/react/DressCodeModal.tsx';
+import FloralDecorations from '../components/react/FloralDecorations.tsx';
+import { FloralDivider } from '../components/react/FloralDecorations.tsx';
+import ScrollProgressBar from '../components/react/ScrollProgressBar.tsx';
+
+import { events } from '../config/events';
+import Preloader from '../components/react/Preloader.tsx';
+---
+
+<Layout>
+  <Preloader client:load />
+  <ScrollProgressBar client:load />
+  <ConfettiExplosion client:idle />
+
+  <Navbar>
+    <LanguageToggle slot="lang-toggle" client:load />
+    <SoundToggle slot="sound-toggle" client:load />
+  </Navbar>
+
+  <!-- Hero (already has parallax mouse + scroll) -->
+  <HeroAnimation client:load />
+
+  <!-- Countdown Section -->
+  <Section id="countdown" bg="ivory" padding="md">
+    <FloralDecorations variant="scattered" client:visible />
+    <CountdownTimer client:load />
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Love Story Flow -->
+  <Section id="story" bg="ivory">
+    <FloralDecorations variant="section-left" color="text-gold/[0.12]" client:visible />
+    <LoveTimeline client:visible />
+  </Section>
+
+  <FloralDivider client:visible />
+
+  <!-- Events Modular Boxes -->
+  <Section id="events" bg="white">
+    <FloralDecorations variant="section-right" color="text-sage/[0.10]" client:visible />
+    <div class="relative z-10 mb-16 text-center">
+      <p class="font-body mb-3 text-xs font-light uppercase tracking-[0.4em] text-gold">
+        <span class="section-text-es">14 de Noviembre, 2026 - 4:30 PM</span>
+        <span class="section-text-en hidden">November 14, 2026 - 4:30 PM</span>
+      </p>
+      <h2 class="text-4xl text-charcoal md:text-5xl" style="font-family: 'Brittany Signature', 'Caveat', cursive;">
+        <span class="section-text-es">Nuestra Boda</span>
+        <span class="section-text-en hidden">Our Wedding</span>
+      </h2>
+      <div class="mx-auto mt-6 mb-10 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      
+      {/* Prominent Dress Code */}
+      <DressCodeModal client:visible />
+    </div>
+    <div class="relative z-10 flex justify-center scroll-stagger max-w-xl mx-auto">
+      {events.map((event) => (
+        <div class="w-full">
+          <EventCard
+            titleEs="Ceremonia & Recepción"
+            titleEn="Ceremony & Reception"
+            time={event.time}
+            venue={event.venue}
+            address={event.address}
+            descriptionEs="Acompáñanos en este día tan especial lleno de amor, risas y recuerdos inolvidables."
+            descriptionEn="Join us for a day filled with love, laughter, and unforgettable memories."
+            mapUrl={event.mapUrl}
+          />
+        </div>
+      ))}
+    </div>
+    <div class="relative z-10 mt-12">
+      <VenueMap client:visible />
+    </div>
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Gallery Full Width Sticky -->
+  <section id="gallery" class="relative w-full bg-ivory">
+    <FloralDecorations variant="frame" color="text-sage-light/[0.15]" client:visible />
+    <PhotoGallery client:visible />
+  </section>
+
+  <SectionDivider variant="ornament" />
+
+  <!-- Photo Share Block (Post-RSVP) -->
+  <Section id="rsvp" bg="gradient">
+    <FloralDecorations variant="scattered" color="text-gold/[0.08]" client:visible />
+    <div class="relative z-10 glass-panel p-8 md:p-12 max-w-4xl mx-auto rounded-xl">
+      <PhotoShare client:visible />
+    </div>
+  </Section>
+
+  <FloralDivider client:visible />
+
+  <!-- Gift Registry Bento -->
+  <Section id="gifts" bg="ivory">
+    <FloralDecorations variant="section-left" color="text-blush-dark/[0.08]" client:visible />
+    <div class="relative z-10 mb-8 text-center">
+      <p class="font-body mb-3 text-xs font-light uppercase tracking-[0.4em] text-gold">
+        <span class="section-text-es">Un detalle para los novios</span>
+        <span class="section-text-en hidden">A gift for the couple</span>
+      </p>
+      <h2 class="text-4xl text-charcoal md:text-5xl" style="font-family: 'Brittany Signature', 'Caveat', cursive;">
+        <span class="section-text-es">El Mejor Regalo</span>
+        <span class="section-text-en hidden">Our Greatest Gift</span>
+      </h2>
+      <div class="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <p class="font-body mx-auto mt-6 max-w-lg text-sm font-light leading-relaxed text-charcoal-muted">
+        <span class="section-text-es">Nuestro mayor regalo es poder celebrar este día con ustedes. Sin embargo, si desean tener un detalle para apoyar nuestra nueva vida y luna de miel, agradeceremos una transferencia o lluvia de sobres.</span>
+        <span class="section-text-en hidden">Your presence is our greatest gift. However, if you wish to help us celebrate our new life and honeymoon, a transfer or an envelope gift will be deeply appreciated.</span>
+      </p>
+    </div>
+    
+    <div class="relative z-10 flex justify-center w-full px-4 scroll-stagger">
+      <GiftAccounts client:visible />
+    </div>
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Music Module -->
+  <Section id="music" bg="white">
+    <FloralDecorations variant="section-right" color="text-sage/[0.12]" client:visible />
+    <div class="relative z-10">
+      <MusicPlaylist client:visible />
+    </div>
+  </Section>
+
+  <Footer />
+</Layout>
+
+<script>
+  // ─── Language Toggle ───
+  function updateSectionLang(lang: string) {
+    document.querySelectorAll('.section-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.section-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateSectionLang(e.detail);
+  }) as EventListener);
+
+  const storedLang = localStorage.getItem('wedding-lang') || 'es';
+  if (storedLang === 'en') updateSectionLang('en');
+
+  // ─── Scroll-Triggered CSS Animations (IntersectionObserver) ───
+  const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-line-expand');
+
+  const scrollObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          scrollObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: '-40px 0px',
+    }
+  );
+
+  scrollElements.forEach((el) => scrollObserver.observe(el));
+</script>

@@ -1,0 +1,99 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Laura & Mauro - 14.11.2026',
+  description = 'We\'re getting married! Join us to celebrate our love. | ¡Nos casamos! Acompáñanos a celebrar nuestro amor.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#C9A96E" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/og-image.jpg" />
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="/fonts/PlayfairDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/SpaceGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Caveat-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/BrittanyScript.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <!-- Brittany Signature font (inline to ensure loading) -->
+    <style>
+      @font-face {
+        font-family: 'Brittany Signature';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/BrittanyScript.woff2') format('woff2'),
+             url('/fonts/BrittanySignature.ttf') format('truetype');
+      }
+    </style>
+
+    <!-- Lenis CSS -->
+    <style>
+      html.lenis, html.lenis body {
+        height: auto;
+        width: 100%;
+      }
+      .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+      }
+      .lenis.lenis-smooth [data-lenis-prevent] {
+        overscroll-behavior: contain;
+      }
+      .lenis.lenis-stopped {
+        overflow: hidden;
+      }
+      .lenis.lenis-smooth iframe {
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-ivory text-charcoal antialiased">
+    <slot />
+
+    <!-- Lenis JS -->
+    <script type="module">
+      import Lenis from 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/+esm';
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

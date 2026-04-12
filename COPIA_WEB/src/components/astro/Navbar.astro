@@ -1,0 +1,175 @@
+---
+const navLinks = [
+  { href: '#home', labelEs: 'Inicio', labelEn: 'Home' },
+  { href: '#story', labelEs: 'Historia', labelEn: 'Story' },
+  { href: '#events', labelEs: 'Eventos', labelEn: 'Events' },
+  { href: '#gallery', labelEs: 'Galería', labelEn: 'Gallery' },
+  { href: '#rsvp', labelEs: 'RSVP', labelEn: 'RSVP' },
+  { href: '#gifts', labelEs: 'Regalos', labelEn: 'Gifts' },
+  { href: '#music', labelEs: 'Música', labelEn: 'Music' },
+];
+---
+
+<nav
+  class="fixed top-6 left-0 right-0 z-50 mx-auto flex max-w-5xl items-center justify-between px-6 py-4 transition-all duration-500 ease-elegant md:rounded-full"
+  id="main-nav"
+>
+  <!-- Background Layer (activates on scroll) -->
+  <div 
+    id="nav-bg"
+    class="absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 md:rounded-full glass-panel"
+  ></div>
+
+  <!-- Logo -->
+  <a href="#home" class="relative z-10 font-display text-2xl font-bold tracking-wide text-charcoal transition-colors hover:text-gold">
+    L <span class="font-accent text-3xl text-gold">&</span> M
+  </a>
+
+  <!-- Desktop nav -->
+  <div class="hidden items-center gap-10 md:flex">
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        class="nav-link relative font-body text-[0.75rem] font-light uppercase tracking-[0.2em] text-charcoal-muted transition-colors duration-300 hover:text-gold"
+        data-label-es={link.labelEs}
+        data-label-en={link.labelEn}
+      >
+        <span class="nav-text-es">{link.labelEs}</span>
+        <span class="nav-text-en hidden">{link.labelEn}</span>
+        <span class="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full"></span>
+      </a>
+    ))}
+  </div>
+
+  <!-- Controls -->
+  <div class="relative z-10 flex items-center gap-4">
+    <div id="lang-toggle-slot" class="scale-90 transition-transform hover:scale-100">
+      <slot name="lang-toggle" />
+    </div>
+    <div id="sound-toggle-slot" class="scale-90 transition-transform hover:scale-100">
+      <slot name="sound-toggle" />
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      type="button"
+      id="mobile-menu-btn"
+      class="ml-2 flex h-11 w-11 items-center justify-center text-charcoal-muted transition-colors hover:text-gold md:hidden"
+      aria-label="Open menu"
+    >
+      <svg class="h-6 w-6" id="menu-icon-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg class="hidden h-6 w-6" id="menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu overlay -->
+  <div 
+    id="mobile-menu" 
+    class="fixed inset-0 top-0 z-40 flex hidden min-h-screen flex-col items-center justify-center bg-ivory/98 backdrop-blur-xl opacity-0 transition-opacity duration-300 md:hidden"
+  >
+    <div class="flex flex-col items-center gap-8 text-center">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-nav-link font-display text-3xl text-charcoal transition-colors hover:text-gold"
+          data-label-es={link.labelEs}
+          data-label-en={link.labelEn}
+        >
+          <span class="nav-text-es">{link.labelEs}</span>
+          <span class="nav-text-en hidden">{link.labelEn}</span>
+        </a>
+      ))}
+    </div>
+    
+    <div class="mt-12 opacity-50">
+      <svg class="h-12 w-12 text-gold" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Custom utility for the nav active state */
+  .nav-scrolled {
+    width: 90%;
+    max-width: 60rem;
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+  const nav = document.getElementById('main-nav');
+  const navBg = document.getElementById('nav-bg');
+
+  // Mobile Menu Logic
+  btn?.addEventListener('click', () => {
+    const isHidden = menu?.classList.contains('hidden');
+    
+    if (isHidden) {
+      menu?.classList.remove('hidden');
+      // Small delay to allow display:block to apply before opacity transition
+      requestAnimationFrame(() => {
+        menu?.classList.remove('opacity-0');
+      });
+      iconOpen?.classList.add('hidden');
+      iconClose?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    } else {
+      menu?.classList.add('opacity-0');
+      setTimeout(() => {
+        menu?.classList.add('hidden');
+      }, 300);
+      iconOpen?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  });
+
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu?.classList.add('opacity-0');
+      setTimeout(() => {
+        menu?.classList.add('hidden');
+      }, 300);
+      iconOpen?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Language Logic
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    const lang = e.detail;
+    document.querySelectorAll('.nav-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.nav-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }) as EventListener);
+
+  const storedLang = localStorage.getItem('wedding-lang') || 'es';
+  if (storedLang === 'en') {
+    document.querySelectorAll('.nav-text-es').forEach((el) => (el as HTMLElement).classList.add('hidden'));
+    document.querySelectorAll('.nav-text-en').forEach((el) => (el as HTMLElement).classList.remove('hidden'));
+  }
+
+  // Scroll Logic for "Floating Island"
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navBg?.classList.remove('opacity-0');
+      nav?.classList.add('nav-scrolled');
+    } else {
+      navBg?.classList.add('opacity-0');
+      nav?.classList.remove('nav-scrolled');
+    }
+  }, { passive: true });
+</script>

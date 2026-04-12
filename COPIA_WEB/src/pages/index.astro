@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/astro/Navbar.astro';
+import Section from '../components/astro/Section.astro';
+import EventCard from '../components/astro/EventCard.astro';
+import GiftCard from '../components/astro/GiftCard.astro';
+import SectionDivider from '../components/astro/SectionDivider.astro';
+import Footer from '../components/astro/Footer.astro';
+
+import HeroAnimation from '../components/react/HeroAnimation.tsx';
+import LanguageToggle from '../components/react/LanguageToggle.tsx';
+import SoundToggle from '../components/react/SoundToggle.tsx';
+import CountdownTimer from '../components/react/CountdownTimer.tsx';
+import LoveTimeline from '../components/react/LoveTimeline.tsx';
+import VenueMap from '../components/react/VenueMap.tsx';
+import PhotoGallery from '../components/react/PhotoGallery.tsx';
+import RsvpForm from '../components/react/RsvpForm.tsx';
+import MusicPlaylist from '../components/react/MusicPlaylist.tsx';
+import FloatingElements from '../components/react/FloatingElements.tsx';
+import CustomCursor from '../components/react/CustomCursor.tsx';
+import ConfettiExplosion from '../components/react/ConfettiExplosion.tsx';
+import DressCodeModal from '../components/react/DressCodeModal.tsx';
+import FloralDecorations from '../components/react/FloralDecorations.tsx';
+import { FloralDivider } from '../components/react/FloralDecorations.tsx';
+import ScrollProgressBar from '../components/react/ScrollProgressBar.tsx';
+
+import { events } from '../config/events';
+import { giftStores } from '../config/registry';
+---
+
+<Layout>
+  <ScrollProgressBar client:load />
+  <FloatingElements client:load />
+  <CustomCursor client:only="react" />
+  <ConfettiExplosion client:idle />
+
+  <Navbar>
+    <LanguageToggle slot="lang-toggle" client:load />
+    <SoundToggle slot="sound-toggle" client:load />
+  </Navbar>
+
+  <!-- Hero (already has parallax mouse + scroll) -->
+  <HeroAnimation client:load />
+
+  <!-- Countdown with corner florals -->
+  <Section id="countdown" bg="ivory" padding="md">
+    <FloralDecorations variant="scattered" client:visible />
+    <CountdownTimer client:load />
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Love Story with left-side floral accents -->
+  <Section id="story" bg="ivory">
+    <FloralDecorations variant="section-left" color="text-gold/[0.08]" client:visible />
+    <LoveTimeline client:visible />
+  </Section>
+
+  <!-- Floral divider (animated with scroll) -->
+  <FloralDivider client:visible />
+
+  <!-- Events with right-side floral accents -->
+  <Section id="events" bg="white">
+    <FloralDecorations variant="section-right" color="text-blush/[0.12]" client:visible />
+    <div class="relative z-10 mb-16 text-center">
+      <p class="font-body mb-3 text-xs font-light uppercase tracking-[0.4em] text-gold">
+        <span class="section-text-es">14 de Noviembre, 2026</span>
+        <span class="section-text-en hidden">November 14, 2026</span>
+      </p>
+      <h2 class="font-display text-4xl font-bold text-charcoal md:text-5xl">
+        <span class="section-text-es">Celebremos Juntos</span>
+        <span class="section-text-en hidden">Let's Celebrate Together</span>
+      </h2>
+      <div class="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <p class="font-body mt-6 text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
+        <span class="section-text-es">Código de vestimenta:</span>
+        <span class="section-text-en hidden">Dress code:</span>
+        <DressCodeModal client:visible />
+      </p>
+    </div>
+    <div class="relative z-10 grid gap-6 md:grid-cols-2 scroll-stagger">
+      {events.map((event) => (
+        <EventCard
+          titleEs={event.id === 'ceremony' ? 'Ceremonia' : 'Recepción'}
+          titleEn={event.id === 'ceremony' ? 'Ceremony' : 'Reception'}
+          time={event.time}
+          venue={event.venue}
+          address={event.address}
+          descriptionEs={event.id === 'ceremony'
+            ? 'Acompáñanos en este momento tan especial donde uniremos nuestras vidas.'
+            : '¡A celebrar! Cena, baile y mucha diversión.'}
+          descriptionEn={event.id === 'ceremony'
+            ? 'Join us for this special moment as we unite our lives.'
+            : "Let's celebrate! Dinner, dancing, and lots of fun."}
+          mapUrl={event.mapUrl}
+        />
+      ))}
+    </div>
+    <div class="relative z-10 mt-12">
+      <VenueMap client:visible />
+    </div>
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Gallery with frame florals -->
+  <Section id="gallery" bg="ivory">
+    <FloralDecorations variant="frame" color="text-sage/[0.10]" client:visible />
+    <div class="relative z-10">
+      <PhotoGallery client:visible />
+    </div>
+  </Section>
+
+  <SectionDivider variant="ornament" />
+
+  <!-- RSVP with scattered florals -->
+  <Section id="rsvp" bg="gradient">
+    <FloralDecorations variant="scattered" color="text-gold/[0.06]" client:visible />
+    <div class="relative z-10">
+      <RsvpForm client:visible />
+    </div>
+  </Section>
+
+  <!-- Floral divider (animated) -->
+  <FloralDivider client:visible />
+
+  <!-- Gift Registry with left florals -->
+  <Section id="gifts" bg="ivory">
+    <FloralDecorations variant="section-left" color="text-blush/[0.10]" client:visible />
+    <div class="relative z-10 mb-16 text-center">
+      <p class="font-body mb-3 text-xs font-light uppercase tracking-[0.4em] text-gold">
+        <span class="section-text-es">Un detalle para los novios</span>
+        <span class="section-text-en hidden">A gift for the couple</span>
+      </p>
+      <h2 class="font-display text-4xl font-bold text-charcoal md:text-5xl">
+        <span class="section-text-es">Mesa de Regalos</span>
+        <span class="section-text-en hidden">Gift Registry</span>
+      </h2>
+      <div class="mx-auto mt-6 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <p class="font-body mx-auto mt-6 max-w-md text-sm font-light leading-relaxed text-charcoal-muted">
+        <span class="section-text-es">Tu presencia es nuestro mejor regalo, pero si deseas obsequiarnos algo...</span>
+        <span class="section-text-en hidden">Your presence is our greatest gift, but if you wish to give us something...</span>
+      </p>
+    </div>
+    <div class="relative z-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 scroll-stagger">
+      {giftStores.map((store) => (
+        <GiftCard
+          nameEs={store.nameEs}
+          nameEn={store.nameEn}
+          descriptionEs={store.descriptionEs}
+          descriptionEn={store.descriptionEn}
+          url={store.url}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <SectionDivider variant="floral" />
+
+  <!-- Music with right florals -->
+  <Section id="music" bg="white">
+    <FloralDecorations variant="section-right" color="text-gold/[0.08]" client:visible />
+    <div class="relative z-10">
+      <MusicPlaylist client:visible />
+    </div>
+  </Section>
+
+  <Footer />
+</Layout>
+
+<script>
+  // ─── Language Toggle ───
+  function updateSectionLang(lang: string) {
+    document.querySelectorAll('.section-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.section-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateSectionLang(e.detail);
+  }) as EventListener);
+
+  const storedLang = localStorage.getItem('wedding-lang') || 'es';
+  if (storedLang === 'en') updateSectionLang('en');
+
+  // ─── Scroll-Triggered CSS Animations (IntersectionObserver) ───
+  const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-line-expand');
+
+  const scrollObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          scrollObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: '-40px 0px',
+    }
+  );
+
+  scrollElements.forEach((el) => scrollObserver.observe(el));
+</script>

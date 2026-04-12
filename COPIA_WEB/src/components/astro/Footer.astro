@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-charcoal py-24 text-ivory">
+  <!-- Background Noise/Texture -->
+  <div class="pointer-events-none absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%221%22/%3E%3C/svg%3E');"></div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-6 text-center sm:px-8">
+    <div class="mb-10 scroll-reveal">
+      <span class="font-display text-5xl font-bold tracking-tight md:text-7xl">
+        Laura <span class="font-accent text-gold">&</span> Mauro
+      </span>
+    </div>
+
+    <div class="mx-auto mb-10 h-px w-24 bg-gradient-to-r from-transparent via-gold/40 to-transparent scroll-line-expand origin-center" />
+
+    <div class="flex flex-col items-center justify-center gap-6 md:flex-row md:gap-12 scroll-reveal">
+      <a href="#home" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-ivory/60 transition-colors hover:text-gold">Inicio</a>
+      <a href="#story" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-ivory/60 transition-colors hover:text-gold">Historia</a>
+      <a href="#rsvp" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-ivory/60 transition-colors hover:text-gold">RSVP</a>
+      <a href="#gifts" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-ivory/60 transition-colors hover:text-gold">Regalos</a>
+    </div>
+
+    <p class="font-body mt-12 text-sm font-light uppercase tracking-[0.3em] text-gold/60 scroll-reveal">
+      <span class="footer-text-es">#LauraYMauro2026</span>
+      <span class="footer-text-en hidden">#LauraAndMauro2026</span>
+    </p>
+
+    <div class="mt-16 flex flex-col items-center justify-center gap-2 text-xs font-light text-ivory/20 md:flex-row scroll-reveal">
+      <p>
+        <span class="footer-text-es">Hecho con amor</span>
+        <span class="footer-text-en hidden">Made with love</span>
+      </p>
+      <span class="hidden md:block">&bull;</span>
+      <p>&copy; {year}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function updateFooterLang(lang: string) {
+    document.querySelectorAll('.footer-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.footer-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateFooterLang(e.detail);
+  }) as EventListener);
+
+  const lang = localStorage.getItem('wedding-lang') || 'es';
+  if (lang === 'en') updateFooterLang('en');
+</script>

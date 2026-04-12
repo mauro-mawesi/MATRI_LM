@@ -1,0 +1,34 @@
+---
+interface Props {
+  id: string;
+  class?: string;
+  bg?: 'ivory' | 'white' | 'gradient' | 'charcoal';
+  padding?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  id,
+  class: className = '',
+  bg = 'ivory',
+  padding = 'lg',
+} = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  ivory: 'bg-ivory',
+  white: 'bg-ivory-warm',
+  gradient: 'bg-gradient-section-alt',
+  charcoal: 'bg-charcoal text-ivory',
+};
+
+const paddingClasses: Record<string, string> = {
+  sm: 'py-16 md:py-20',
+  md: 'py-20 md:py-28',
+  lg: 'py-24 md:py-36',
+};
+---
+
+<section id={id} class:list={[bgClasses[bg], paddingClasses[padding], 'relative overflow-hidden', className]}>
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+    <slot />
+  </div>
+</section>

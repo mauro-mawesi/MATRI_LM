@@ -1,0 +1,68 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-ivory py-24 text-charcoal">
+  <div class="relative z-10 mx-auto max-w-6xl px-6 text-center sm:px-8">
+    <!-- Names in Brittany Signature -->
+    <div class="mb-10 scroll-reveal">
+      <span class="text-5xl md:text-7xl text-charcoal" style="font-family: 'Brittany Signature', 'Caveat', cursive;">
+        Laura <span class="text-gold">&</span> Mauro
+      </span>
+    </div>
+
+    <div class="mx-auto mb-10 h-px w-24 bg-gradient-to-r from-transparent via-gold/40 to-transparent scroll-line-expand origin-center" />
+
+    <div class="flex flex-col items-center justify-center gap-6 md:flex-row md:gap-12 scroll-reveal">
+      <a href="#home" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-charcoal-muted transition-colors hover:text-gold">Inicio</a>
+      <a href="#story" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-charcoal-muted transition-colors hover:text-gold">Historia</a>
+      <a href="#rsvp" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-charcoal-muted transition-colors hover:text-gold">RSVP</a>
+      <a href="#gifts" class="inline-block py-2 font-body text-xs uppercase tracking-[0.2em] text-charcoal-muted transition-colors hover:text-gold">Regalos</a>
+    </div>
+
+    <p class="font-body mt-12 text-sm font-light uppercase tracking-[0.3em] text-gold/60 scroll-reveal">
+      <span class="footer-text-es">#ContraTodoPronostico</span>
+      <span class="footer-text-en hidden">#ContraTodoPronostico</span>
+    </p>
+
+    <div class="mt-16 flex flex-col items-center justify-center gap-2 text-xs font-light text-charcoal-muted/40 md:flex-row scroll-reveal">
+      <p>
+        <span class="footer-text-es">Hecho con amor</span>
+        <span class="footer-text-en hidden">Made with love</span>
+      </p>
+      <span class="hidden md:block">&bull;</span>
+      <p>&copy; {year}</p>
+    </div>
+  </div>
+
+  <!-- Subtle bottom botanical accent -->
+  <div class="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden h-32 opacity-25">
+    <svg viewBox="0 0 300 60" fill="none" class="absolute bottom-2 left-1/2 -translate-x-1/2 w-80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 30 C50 28, 100 20, 150 30 C200 40, 250 32, 300 30" stroke="#7A9A6B" stroke-width="0.8" opacity="0.4" />
+      <ellipse cx="40" cy="24" rx="5" ry="10" transform="rotate(-30 40 24)" fill="#9CAF88" opacity="0.3" />
+      <ellipse cx="110" cy="20" rx="5" ry="10" transform="rotate(-10 110 20)" fill="#9CAF88" opacity="0.3" />
+      <ellipse cx="190" cy="34" rx="5" ry="10" transform="rotate(15 190 34)" fill="#9CAF88" opacity="0.3" />
+      <ellipse cx="265" cy="32" rx="5" ry="10" transform="rotate(15 265 32)" fill="#9CAF88" opacity="0.3" />
+      <circle cx="55" cy="28" r="2.5" fill="#D4AF37" opacity="0.2" />
+      <circle cx="210" cy="38" r="2.5" fill="#D4AF37" opacity="0.2" />
+    </svg>
+  </div>
+</footer>
+
+<script>
+  function updateFooterLang(lang: string) {
+    document.querySelectorAll('.footer-text-es').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'en');
+    });
+    document.querySelectorAll('.footer-text-en').forEach((el) => {
+      (el as HTMLElement).classList.toggle('hidden', lang === 'es');
+    });
+  }
+
+  window.addEventListener('lang-change', ((e: CustomEvent<string>) => {
+    updateFooterLang(e.detail);
+  }) as EventListener);
+
+  const lang = localStorage.getItem('wedding-lang') || 'es';
+  if (lang === 'en') updateFooterLang('en');
+</script>
