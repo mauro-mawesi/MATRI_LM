@@ -58,7 +58,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       });
     }
 
-    notifyWhatsApp(`📋 Actualización de asistencia\n👤 ${entry.name}\n📧 ${entry.email}\n✅ Asiste: ${entry.attending ? 'Sí' : 'No'}\n👥 Acompañantes: ${entry.guests}\n🍽️ Dieta: ${entry.dietary || 'N/A'}\n💬 ${entry.message || 'Sin mensaje'}`);
+    notifyWhatsApp(`Actualizacion de asistencia\nNombre: ${entry.name}\nEmail: ${entry.email}\nAsiste: ${entry.attending ? 'Si' : 'No'}\nAcompanantes: ${entry.guests}\nDieta: ${entry.dietary || 'N/A'}\nMensaje: ${entry.message || 'Sin mensaje'}`);
 
     return new Response(JSON.stringify({ success: true, entry }), {
       status: 201, headers: { 'Content-Type': 'application/json' },

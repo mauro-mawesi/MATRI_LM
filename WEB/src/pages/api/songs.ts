@@ -60,7 +60,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       });
     }
 
-    notifyWhatsApp(`🎵 Nueva canción sugerida\n🎶 ${entry.song}\n🎤 ${entry.artist}`);
+    notifyWhatsApp(`Nueva cancion sugerida\nCancion: ${entry.song}\nArtista: ${entry.artist}`);
 
     return new Response(JSON.stringify({ success: true, entry }), {
       status: 201, headers: { 'Content-Type': 'application/json' },

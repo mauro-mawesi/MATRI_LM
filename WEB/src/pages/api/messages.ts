@@ -114,8 +114,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       );
     }
 
-    const photoText = savedPhotos.length > 0 ? `\n📷 ${savedPhotos.length} foto(s)` : '';
-    notifyWhatsApp(`💌 Nuevo mensaje en el guestbook\n👤 ${entry.name}\n🔒 ${entry.visibility === 'private' ? 'Privado' : 'Público'}\n💬 ${entry.message}${photoText}`);
+    const photoText = savedPhotos.length > 0 ? `\nFotos: ${savedPhotos.length}` : '';
+    notifyWhatsApp(`Nuevo mensaje en el guestbook\nDe: ${entry.name}\nVisibilidad: ${entry.visibility === 'private' ? 'Privado' : 'Publico'}\nMensaje: ${entry.message}${photoText}`);
 
     return new Response(
       JSON.stringify({ entry }),
