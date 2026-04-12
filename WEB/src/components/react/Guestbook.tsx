@@ -188,7 +188,7 @@ export default function Guestbook() {
   // Handle like
   const handleLike = useCallback(async (id: string) => {
     try {
-      const res = await fetch('/api/messages/like', {
+      const res = await authedFetch('/api/messages/like', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),

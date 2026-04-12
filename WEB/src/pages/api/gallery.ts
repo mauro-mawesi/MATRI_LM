@@ -9,7 +9,7 @@ export const GET: APIRoute = async () => {
     .list('', { limit: 50, sortBy: { column: 'created_at', order: 'asc' } });
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: 'Error del servidor' }), {
       status: 500, headers: { 'Content-Type': 'application/json' },
     });
   }

@@ -1,45 +1,33 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../../lib/supabase';
+import { verifyInviteCode } from '../../../lib/verify-invite';
 
 export const POST: APIRoute = async ({ request }) => {
+  const denied = await verifyInviteCode(request);
+  if (denied) return denied;
+
   try {
     const { id } = await request.json();
 
     if (!id || typeof id !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Message ID is required' }),
+        JSON.stringify({ error: 'Invalid request' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
-    // Increment likes atomically via RPC or raw update
-    const { data: current, error: fetchError } = await supabase
-      .from('messages')
-      .select('likes')
-      .eq('id', id)
-      .single();
+    // Atomic increment via Postgres function
+    const { data, error } = await supabase.rpc('increment_likes', { message_id: id });
 
-    if (fetchError || !current) {
+    if (error || data === -1) {
       return new Response(
         JSON.stringify({ error: 'Message not found' }),
         { status: 404, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
-    const { error: updateError } = await supabase
-      .from('messages')
-      .update({ likes: current.likes + 1 })
-      .eq('id', id);
-
-    if (updateError) {
-      return new Response(
-        JSON.stringify({ error: updateError.message }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
-      );
-    }
-
     return new Response(
-      JSON.stringify({ likes: current.likes + 1 }),
+      JSON.stringify({ likes: data }),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
   } catch {

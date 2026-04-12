@@ -65,11 +65,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     const valid = code.trim().toUpperCase() === data.value.trim().toUpperCase();
 
-    // Log the attempt
+    // Log the attempt (hash failed codes for security)
+    const codeLog = valid
+      ? '***VALID***'
+      : `***INVALID_${code.trim().length}chars***`;
+
     await supabase.from('access_log').insert({
       ip,
       name: name.trim(),
-      code_entered: valid ? '***VALID***' : code.trim(),
+      code_entered: codeLog,
       success: valid,
       user_agent: userAgent,
     });

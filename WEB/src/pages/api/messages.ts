@@ -3,10 +3,17 @@ import { nanoid } from 'nanoid';
 import { messageSchema } from '../../lib/message-schema';
 import { supabase } from '../../lib/supabase';
 import { verifyInviteCode } from '../../lib/verify-invite';
+import { rateLimit } from '../../lib/rate-limit';
 
 const MAX_PHOTOS = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MIME_TO_EXT: Record<string, string[]> = {
+  'image/jpeg': ['jpg', 'jpeg'],
+  'image/png': ['png'],
+  'image/webp': ['webp'],
+  'image/gif': ['gif'],
+};
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
@@ -16,7 +23,7 @@ export const GET: APIRoute = async () => {
     .order('submitted_at', { ascending: false });
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: 'Error del servidor' }), {
       status: 500, headers: { 'Content-Type': 'application/json' },
     });
   }
@@ -27,7 +34,10 @@ export const GET: APIRoute = async () => {
   );
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const limited = rateLimit(clientAddress || 'unknown', 'messages', 5, 60 * 60 * 1000); // 5 per hour
+  if (limited) return limited;
+
   const denied = await verifyInviteCode(request);
   if (denied) return denied;
 
@@ -55,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (!ALLOWED_TYPES.includes(file.type)) {
         return new Response(
-          JSON.stringify({ error: `Tipo de archivo no permitido: ${file.type}` }),
+          JSON.stringify({ error: 'Tipo de archivo no permitido' }),
           { status: 400, headers: { 'Content-Type': 'application/json' } },
         );
       }
@@ -67,8 +77,11 @@ export const POST: APIRoute = async ({ request }) => {
         );
       }
 
-      const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-      const filename = `${nanoid()}.${ext}`;
+      // Validate extension matches MIME type
+      const ext = file.name.split('.').pop()?.toLowerCase() || '';
+      const allowedExts = MIME_TO_EXT[file.type] || [];
+      const safeExt = allowedExts.includes(ext) ? ext : allowedExts[0] || 'jpg';
+      const filename = `${nanoid()}.${safeExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('guestbook-photos')

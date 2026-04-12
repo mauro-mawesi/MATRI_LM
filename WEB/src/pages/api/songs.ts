@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { z } from 'zod';
 import { supabase } from '../../lib/supabase';
 import { verifyInviteCode } from '../../lib/verify-invite';
+import { rateLimit } from '../../lib/rate-limit';
 
 const songSchema = z.object({
   song: z.string().min(1).max(200),
@@ -16,7 +17,7 @@ export const GET: APIRoute = async () => {
     .order('submitted_at', { ascending: false });
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: 'Error del servidor' }), {
       status: 500, headers: { 'Content-Type': 'application/json' },
     });
   }
@@ -26,7 +27,10 @@ export const GET: APIRoute = async () => {
   });
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const limited = rateLimit(clientAddress || 'unknown', 'songs', 10, 60 * 60 * 1000); // 10 per hour
+  if (limited) return limited;
+
   const denied = await verifyInviteCode(request);
   if (denied) return denied;
 
@@ -50,7 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
     const { error } = await supabase.from('songs').insert(entry);
 
     if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
+      return new Response(JSON.stringify({ error: 'Error del servidor' }), {
         status: 500, headers: { 'Content-Type': 'application/json' },
       });
     }
