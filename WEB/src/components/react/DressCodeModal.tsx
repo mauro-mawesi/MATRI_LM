@@ -14,6 +14,24 @@ const content = {
     description:
       'Queremos que te sientas cómodo, elegante y con un toque fresco de jardín. Piensa en colores con vida, siluetas cuidadas y un look sofisticado pero relajado.',
     tabs: { women: 'Ella', men: 'Él' },
+    women: {
+      tips: [
+        'Vestido maxi o largo, pantalones elegantes',
+        'Sari y joyería son opcionales pero muy bienvenidos',
+        'Jumpsuit / pantalones elegantes',
+        'Accesorios de paja, florales y con texturas son bienvenidos',
+        'Colores florales, pasteles, tierra y botánicos',
+      ],
+    },
+    men: {
+      tips: [
+        'Sin corbatas largas',
+        'Camisa de cuello pequeño, colores beige o muy claros',
+        'Casual elegante con colores tierra y botánicos',
+        'Mocasines / Loafers',
+        'Colores florales, pasteles, tierra y botánicos — no seas tímido',
+      ],
+    },
     note: 'Evitar: jeans, zapatillas deportivas, shorts o camisetas informales.',
     close: 'Entendido',
     scrollHint: 'Desliza para ver más',
@@ -26,8 +44,26 @@ const content = {
     title: 'Colorful, elegant & garden-inspired',
     subtitle: 'Dress Code Guide',
     description:
-      'We want you to feel comfortable, elegant, and fresh with a garden-inspired touch. Think lively colors, polished silhouettes, and a sophisticated but relaxed look.',
+      "We want you to feel comfortable, elegant, and fresh with a garden-inspired touch. Think lively colors, polished silhouettes, and a sophisticated but relaxed look.",
     tabs: { women: 'Her', men: 'Him' },
+    women: {
+      tips: [
+        'Maxi or long dress, elegant pants',
+        'Sari & jewellery are optional but very welcome',
+        'Jumpsuit / elegant pants',
+        'Straw, floral & textured accessories encouraged',
+        'Floral, pastels, earthy & botanical colours',
+      ],
+    },
+    men: {
+      tips: [
+        'No long ties',
+        'Plain small collar, beige or very pale colours',
+        'Elegant casual with earthy & botanical colours',
+        'Moccasins / Loafers',
+        "Floral, pastels, earthy & botanical colours welcome — don't be shy",
+      ],
+    },
     note: 'Please avoid: jeans, sneakers, shorts, or casual t-shirts.',
     close: 'Got it',
     scrollHint: 'Swipe to see more',
@@ -220,6 +256,16 @@ export default function DressCodeModal() {
             <p className="mt-3 text-center font-body text-[0.6rem] tracking-wider text-charcoal-muted/40">
               {t.scrollHint}
             </p>
+
+            {/* Tips */}
+            <ul className="mt-5 space-y-2 px-2">
+              {t[activeTab].tips.map((tip) => (
+                <li key={tip} className="flex items-start gap-2.5 font-body text-sm font-light leading-relaxed text-charcoal-muted">
+                  <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-gold/50" />
+                  {tip}
+                </li>
+              ))}
+            </ul>
 
             {/* Note */}
             <div className="mt-5 rounded-lg border border-gold/20 bg-gold/5 px-5 py-3 text-center">
