@@ -5,66 +5,68 @@ import { useLanguage } from '../../hooks/useLanguage';
 
 const content = {
   es: {
-    triggerLabel: 'Dress code',
-    trigger: 'Colorful, elegant & garden-inspired',
+    triggerLabel: 'Código de vestimenta',
+    trigger: 'Colorido, elegante e inspirado en jardín',
     triggerHint: 'Toca para ver referencias',
     triggerAction: 'Ver guía visual',
-    title: 'Colorful, elegant & garden-inspired',
-    subtitle: 'Guía de Vestimenta',
+    title: 'Colorido, elegante e inspirado en jardín',
+    subtitle: 'Código de Vestimenta',
     description:
-      'Queremos que te sientas cómodo, elegante y con un toque fresco de jardín. Piensa en colores con vida, siluetas cuidadas y un look sofisticado pero relajado.',
-    tabs: { women: 'Ella', men: 'Él' },
+      'Queremos que te sientas cómodo, elegante y con un toque fresco de jardín.',
+    tabs: { women: 'Mujeres', men: 'Hombres' },
     women: {
       tips: [
-        'Vestido maxi o largo, pantalones elegantes',
-        'Sari y joyería son opcionales pero muy bienvenidos',
-        'Jumpsuit / pantalones elegantes',
-        'Accesorios de paja, florales y con texturas son bienvenidos',
-        'Colores florales, pasteles, tierra y botánicos',
+        'Vestidos midi o maxi',
+        'Enterizos o pantalones elegantes',
+        'Se recomiendan telas satinadas, estampados florales y texturas',
+        'Ten en cuenta que la temperatura en Cali es de aproximadamente 27 °C',
       ],
     },
     men: {
       tips: [
-        'Sin corbatas largas',
-        'Camisa de cuello pequeño, colores beige o muy claros',
-        'Casual elegante con colores tierra y botánicos',
-        'Mocasines / Loafers',
-        'Colores florales, pasteles, tierra y botánicos — no seas tímido',
+        'Trajes o pantalones de vestir largos (sin corbata)',
+        'El uso de saco es opcional, pero muy bienvenido',
+        'Camisas de botones',
+        'No shorts ni jeans',
       ],
     },
-    note: 'Evitar: jeans, zapatillas deportivas, shorts o camisetas informales.',
+    allGuests: 'Por favor, evitar blanco, beige o colores muy claros',
+    colorInspiration: 'Los colores florales, pasteles, tonos tierra y botánicos son opciones hermosas y altamente recomendadas',
+    colorInspirationLabel: 'Inspiración de color',
+    allGuestsLabel: 'Todos los invitados',
     close: 'Entendido',
     scrollHint: 'Desliza para ver más',
   },
   en: {
     triggerLabel: 'Dress code',
-    trigger: 'Colorful, elegant & garden-inspired',
+    trigger: 'Colourful, Elegant & Garden-Inspired',
     triggerHint: 'Tap to see outfit references',
     triggerAction: 'Open visual guide',
-    title: 'Colorful, elegant & garden-inspired',
+    title: 'Colourful, Elegant & Garden-Inspired',
     subtitle: 'Dress Code Guide',
     description:
-      "We want you to feel comfortable, elegant, and fresh with a garden-inspired touch. Think lively colors, polished silhouettes, and a sophisticated but relaxed look.",
-    tabs: { women: 'Her', men: 'Him' },
+      'We want you to feel comfortable, elegant, and fresh with a garden-inspired touch.',
+    tabs: { women: 'Ladies', men: 'Men' },
     women: {
       tips: [
-        'Maxi or long dress, elegant pants',
-        'Sari & jewellery are optional but very welcome',
-        'Jumpsuit / elegant pants',
-        'Straw, floral & textured accessories encouraged',
-        'Floral, pastels, earthy & botanical colours',
+        'Midi or maxi dresses',
+        'Jumpsuits or elegant pants',
+        'Satin fabrics, floral patterns and textures are encouraged',
+        "Please keep in mind that Cali's temperature is around 27°C",
       ],
     },
     men: {
       tips: [
-        'No long ties',
-        'Plain small collar, beige or very pale colours',
-        'Elegant casual with earthy & botanical colours',
-        'Moccasins / Loafers',
-        "Floral, pastels, earthy & botanical colours welcome — don't be shy",
+        'Suits or long dress pants (No tie required)',
+        'Jackets are optional but very welcome',
+        'Button-down shirts',
+        'No shorts or jeans',
       ],
     },
-    note: 'Please avoid: jeans, sneakers, shorts, or casual t-shirts.',
+    allGuests: 'Please avoid white, beige or very pale colors',
+    colorInspiration: 'Floral, pastel, earthy and botanical colors are beautiful choices and highly encouraged',
+    colorInspirationLabel: 'Color inspiration',
+    allGuestsLabel: 'All guests',
     close: 'Got it',
     scrollHint: 'Swipe to see more',
   },
@@ -267,10 +269,23 @@ export default function DressCodeModal() {
               ))}
             </ul>
 
-            {/* Note */}
-            <div className="mt-5 rounded-lg border border-gold/20 bg-gold/5 px-5 py-3 text-center">
-              <p className="font-body text-xs font-light italic text-charcoal-muted">
-                {t.note}
+            {/* All guests */}
+            <div className="mt-6 rounded-lg border border-charcoal/8 bg-ivory-warm px-5 py-3">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.15em] text-charcoal-muted mb-1">
+                {t.allGuestsLabel}
+              </p>
+              <p className="font-body text-sm font-light text-charcoal-muted">
+                {t.allGuests}
+              </p>
+            </div>
+
+            {/* Color inspiration */}
+            <div className="mt-3 rounded-lg border border-gold/15 bg-gold/5 px-5 py-3">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.15em] text-gold mb-1">
+                {t.colorInspirationLabel}
+              </p>
+              <p className="font-body text-sm font-light text-charcoal-muted">
+                {t.colorInspiration}
               </p>
             </div>
 
