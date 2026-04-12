@@ -11,6 +11,7 @@ import LanguageToggle from '../components/react/LanguageToggle.tsx';
 import SoundToggle from '../components/react/SoundToggle.tsx';
 import CountdownTimer from '../components/react/CountdownTimer.tsx';
 import LoveTimeline from '../components/react/LoveTimeline.tsx';
+import NotificationCenter from '../components/react/NotificationCenter.tsx';
 import VenueMap from '../components/react/VenueMap.tsx';
 import PhotoGallery from '../components/react/PhotoGallery.tsx';
 import RsvpForm from '../components/react/RsvpForm.tsx';
@@ -40,6 +41,9 @@ import Preloader from '../components/react/Preloader.tsx';
 
   <!-- Hero (already has parallax mouse + scroll) -->
   <HeroAnimation client:load />
+
+  <!-- Notifications -->
+  <NotificationCenter client:load />
 
   <!-- Countdown Section -->
   <Section id="countdown" bg="ivory" padding="md">

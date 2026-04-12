@@ -9,7 +9,7 @@ export default function GiftAccounts() {
   const bankInfo = {
     bank: 'Bancolombia',
     accountPrefix: 'Ahorros',
-    account: '123-456789-00',
+    account: '51421866761',
     titular: 'Laura o Mauro',
   };
 
