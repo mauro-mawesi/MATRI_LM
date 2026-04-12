@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Server-only — these vars have NO PUBLIC_ prefix so Astro never sends them to the browser
-const supabaseUrl = import.meta.env.SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY;
+// Runtime env vars — process.env is read at runtime, not inlined at build time
+const supabaseUrl = process.env.SUPABASE_URL || import.meta.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || import.meta.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables');
