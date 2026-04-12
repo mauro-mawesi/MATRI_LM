@@ -58,14 +58,20 @@ function PhotoCard({ photo, index, onClick, isMobile }: {
       type="button"
       onClick={onClick}
       className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-xl transition-all duration-700 ${offset}`}
-      style={{ height: isMobile ? '45vh' : '60vh' }}
+      style={isMobile
+        ? { width: '100%', height: '45vh' }
+        : { height: '60vh' }
+      }
       whileHover={isMobile ? undefined : { scale: 1.03 }}
     >
       <img
         src={photo.src}
         alt={photo.name}
-        className="h-full w-auto object-cover transition-transform duration-700 group-hover:scale-110"
-        style={{ maxWidth: isMobile ? '80vw' : '45vw', minWidth: isMobile ? '70vw' : '25vw' }}
+        className={isMobile
+          ? 'h-full w-full object-cover'
+          : 'h-full w-auto object-cover transition-transform duration-700 group-hover:scale-110'
+        }
+        style={isMobile ? undefined : { maxWidth: '45vw', minWidth: '25vw' }}
         loading="lazy"
       />
       <div className="absolute inset-0 bg-charcoal/15 transition-opacity duration-500 group-hover:opacity-0" />
@@ -120,16 +126,18 @@ function MobileGallery({ photos, t, onSelect }: {
 
       <div
         className="flex gap-4 overflow-x-auto px-6 pb-6 pt-2"
+        data-lenis-prevent
         style={{
           scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
         }}
       >
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="flex-shrink-0"
+            className="flex-shrink-0 w-[80vw]"
             style={{ scrollSnapAlign: 'center' }}
           >
             <PhotoCard
@@ -141,7 +149,7 @@ function MobileGallery({ photos, t, onSelect }: {
           </div>
         ))}
         {/* End padding */}
-        <div className="flex-shrink-0 w-4" />
+        <div className="flex-shrink-0 w-6" />
       </div>
 
       {/* Dot indicators */}
