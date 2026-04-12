@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { nanoid } from 'nanoid';
-import { messageSchema } from '../lib/message-schema';
-import { supabase } from '../lib/supabase';
+import { messageSchema } from '../../lib/message-schema';
+import { supabase } from '../../lib/supabase';
 
 const MAX_PHOTOS = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB

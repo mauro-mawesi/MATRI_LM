@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
 

@@ -1,11 +1,16 @@
 import type { APIRoute } from 'astro';
-import { rsvpSchema } from '../lib/rsvp-schema';
 import { nanoid } from 'nanoid';
-import { supabase } from '../lib/supabase';
+import { z } from 'zod';
+import { supabase } from '../../lib/supabase';
+
+const songSchema = z.object({
+  song: z.string().min(1).max(200),
+  artist: z.string().min(1).max(200),
+});
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
-    .from('rsvps')
+    .from('songs')
     .select('*')
     .order('submitted_at', { ascending: false });
 
@@ -15,7 +20,7 @@ export const GET: APIRoute = async () => {
     });
   }
 
-  return new Response(JSON.stringify({ rsvps: data, total: data.length }), {
+  return new Response(JSON.stringify({ songs: data }), {
     status: 200, headers: { 'Content-Type': 'application/json' },
   });
 };
@@ -23,11 +28,11 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const result = rsvpSchema.safeParse(body);
+    const result = songSchema.safeParse(body);
 
     if (!result.success) {
       return new Response(
-        JSON.stringify({ error: 'Validation failed', details: result.error.flatten() }),
+        JSON.stringify({ error: 'Validation failed' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
@@ -38,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
       submitted_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase.from('rsvps').insert(entry);
+    const { error } = await supabase.from('songs').insert(entry);
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
