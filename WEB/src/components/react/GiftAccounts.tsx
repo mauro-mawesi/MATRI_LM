@@ -6,7 +6,7 @@ const accounts = [
   {
     id: 'colombia',
     country: { es: 'Colombia', en: 'Colombia' },
-    flag: '🇨🇴',
+    flagCode: 'CO',
     bank: 'Bancolombia',
     type: { es: 'Ahorros', en: 'Savings' },
     account: '51421866761',
@@ -15,7 +15,7 @@ const accounts = [
   {
     id: 'netherlands',
     country: { es: 'Países Bajos', en: 'Netherlands' },
-    flag: '🇳🇱',
+    flagCode: 'NL',
     bank: 'ING',
     type: { es: 'Ahorros', en: 'Savings' },
     account: 'NL37INGB0398301433',
@@ -107,7 +107,11 @@ export default function GiftAccounts() {
               className="rounded-lg border border-charcoal/5 bg-ivory p-5"
             >
               <div className="mb-3 flex items-center gap-2">
-                <span className="text-xl">{acc.flag}</span>
+                <img
+                  src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${acc.flagCode}.svg`}
+                  alt={acc.country[lang]}
+                  className="h-4 w-6 rounded-sm object-cover"
+                />
                 <span className="font-body text-xs font-medium uppercase tracking-[0.15em] text-charcoal-muted">
                   {acc.country[lang]}
                 </span>
