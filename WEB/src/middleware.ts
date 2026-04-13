@@ -18,7 +18,7 @@ export const onRequest = defineMiddleware(async (_context, next) => {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
       "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
-      "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://cdnjs.cloudflare.com",
+      "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://cdnjs.cloudflare.com https://purecatamphetamine.github.io",
       "font-src 'self'",
       "connect-src 'self'",
       "media-src 'self'",
