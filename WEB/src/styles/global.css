@@ -162,6 +162,26 @@ body::before {
   color: transparent;
 }
 
+/* ─── Phone Input Styling ─── */
+.rsvp-phone-input .PhoneInputCountry {
+  margin-right: 0.5rem;
+}
+.rsvp-phone-input .PhoneInputInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: inherit;
+  color: var(--color-charcoal);
+  width: 100%;
+}
+.rsvp-phone-input .PhoneInputInput::placeholder {
+  color: rgba(85, 85, 85, 0.4);
+}
+.rsvp-phone-input .PhoneInputCountrySelectArrow {
+  opacity: 0.4;
+}
+
 .bg-gradient-hero {
   background: radial-gradient(circle at 50% 0%, var(--color-ivory-warm) 0%, var(--color-ivory) 100%);
 }

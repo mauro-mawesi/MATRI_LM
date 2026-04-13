@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useInviteCode } from '../../hooks/useInviteCode';
 import { rsvpSchema } from '../../lib/rsvp-schema';
@@ -13,6 +15,7 @@ export default function RsvpForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [attending, setAttending] = useState(true);
+  const [phone, setPhone] = useState<string | undefined>(undefined);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -21,10 +24,9 @@ export default function RsvpForm() {
     setFormErrors({});
 
     const formData = new FormData(e.currentTarget);
-    const phoneRaw = (formData.get('phone') as string || '').replace(/[\s\-()]/g, '');
     const raw = {
       name: formData.get('name') as string,
-      phone: phoneRaw,
+      phone: phone || '',
       attending,
       guests: Number(formData.get('guests') || 0),
       dietary: (formData.get('dietary') as string) || '',
@@ -134,13 +136,13 @@ export default function RsvpForm() {
           <label htmlFor="rsvp-phone" className="font-body mb-2 block text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
             {t('rsvp.phone')}
           </label>
-          <input
+          <PhoneInput
             id="rsvp-phone"
-            name="phone"
-            type="tel"
-            required
-            placeholder={t('rsvp.phone.placeholder')}
-            className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal placeholder:text-charcoal-muted/40 transition-colors focus:border-gold focus:outline-none sm:text-sm"
+            international
+            defaultCountry="CO"
+            value={phone}
+            onChange={setPhone}
+            className="rsvp-phone-input w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal transition-colors focus-within:border-gold sm:text-sm"
           />
           {formErrors.phone && <p className="mt-1 font-body text-xs text-rose">{formErrors.phone}</p>}
         </motion.div>
