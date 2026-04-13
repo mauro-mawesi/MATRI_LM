@@ -1,10 +1,14 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../lib/supabase';
+import { rateLimit } from '../../lib/rate-limit';
 
 const MAX_FAILED_ATTEMPTS = 5;
 const WINDOW_MINUTES = 15;
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const limited = rateLimit(clientAddress || 'unknown', 'verify-code', 10, 15 * 60 * 1000);
+  if (limited) return limited;
+
   try {
     const { code, name } = await request.json();
     const ip = clientAddress || request.headers.get('x-forwarded-for') || 'unknown';

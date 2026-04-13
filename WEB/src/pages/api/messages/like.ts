@@ -1,8 +1,12 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../../lib/supabase';
 import { verifyInviteCode } from '../../../lib/verify-invite';
+import { rateLimit } from '../../../lib/rate-limit';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const limited = rateLimit(clientAddress || 'unknown', 'like', 30, 60 * 60 * 1000);
+  if (limited) return limited;
+
   const denied = await verifyInviteCode(request);
   if (denied) return denied;
 

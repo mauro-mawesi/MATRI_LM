@@ -16,11 +16,11 @@ export const onRequest = defineMiddleware(async (_context, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
       "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
       "img-src 'self' data: blob: https://*.tile.openstreetmap.org https://cdnjs.cloudflare.com https://purecatamphetamine.github.io",
       "font-src 'self'",
-      "connect-src 'self'",
+      "connect-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
       "media-src 'self'",
       "frame-ancestors 'none'",
       "base-uri 'self'",

@@ -6,7 +6,10 @@ import { verifyInviteCode } from '../../lib/verify-invite';
 import { rateLimit } from '../../lib/rate-limit';
 import { notifyWhatsApp } from '../../lib/notify';
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
+  const denied = await verifyInviteCode(request);
+  if (denied) return denied;
+
   const { data, error } = await supabase
     .from('rsvps')
     .select('*')
