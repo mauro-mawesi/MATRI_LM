@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useDeviceOrientation } from '../../hooks/useDeviceOrientation';
 import { useIsMobile } from '../../hooks/useMediaQuery';
+import { useLanguage } from '../../hooks/useLanguage';
 
 /* ─── Seeded random for SSR consistency ─── */
 function seededRandom(seed: number) {
@@ -274,6 +275,7 @@ interface FloralDecorationsProps {
 }
 
 export default function FloralDecorations({ variant, intensity = 'subtle' }: FloralDecorationsProps) {
+  const { lang } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -311,7 +313,7 @@ export default function FloralDecorations({ variant, intensity = 'subtle' }: Flo
             onClick={requestPermission}
             className="pointer-events-auto absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full border border-gold/30 bg-ivory/90 px-5 py-2 font-body text-[0.6rem] uppercase tracking-[0.2em] text-gold backdrop-blur-sm transition-all duration-300 active:scale-95"
           >
-            Toca para efecto de inclinación
+            {lang === 'es' ? 'Toca para efecto de inclinación' : 'Tap for tilt effect'}
           </button>
         )}
 

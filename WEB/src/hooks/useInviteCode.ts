@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 const CODE_KEY = 'wedding-invite-code';
 const NAME_KEY = 'wedding-guest-name';
+const VERIFIED_EVENT = 'wedding-code-verified';
 
 export function useInviteCode() {
   const [code, setCode] = useState<string | null>(null);
@@ -19,6 +20,19 @@ export function useInviteCode() {
       setGuestName(storedName);
       setVerified(true);
     }
+
+    // Listen for verification from other InviteCodeGate instances
+    const handler = () => {
+      const c = localStorage.getItem(CODE_KEY);
+      const n = localStorage.getItem(NAME_KEY);
+      if (c && n) {
+        setCode(c);
+        setGuestName(n);
+        setVerified(true);
+      }
+    };
+    window.addEventListener(VERIFIED_EVENT, handler);
+    return () => window.removeEventListener(VERIFIED_EVENT, handler);
   }, []);
 
   const verify = useCallback(async (inputCode: string, inputName: string) => {
@@ -42,6 +56,8 @@ export function useInviteCode() {
         setCode(normalizedCode);
         setGuestName(normalizedName);
         setVerified(true);
+        // Notify all other instances to unlock
+        window.dispatchEvent(new CustomEvent(VERIFIED_EVENT));
         return true;
       } else {
         setError(data.error || 'Código incorrecto');
@@ -56,4 +72,10 @@ export function useInviteCode() {
   }, []);
 
   return { code, guestName, verified, verify, checking, error };
+}
+
+/** Returns the stored guest name */
+export function getGuestName(): string {
+  if (typeof window === 'undefined') return '';
+  return localStorage.getItem(NAME_KEY) || '';
 }

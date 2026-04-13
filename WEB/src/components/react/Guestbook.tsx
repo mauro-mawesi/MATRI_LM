@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
 import type { MessageEntry } from '../../lib/message-schema';
 import { authedFetch } from '../../lib/authed-fetch';
+import { useInviteCode } from '../../hooks/useInviteCode';
 
 function photoUrl(filename: string): string {
   return `/api/photo/guestbook-photos/${filename}`;
@@ -158,6 +159,7 @@ function MessageCard({ entry, lang, index, onPhotoClick, onLike, isLiked }: {
 /* ─── Main Guestbook Component ─── */
 export default function Guestbook() {
   const { t, lang } = useLanguage();
+  const { guestName } = useInviteCode();
   const [messages, setMessages] = useState<MessageEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -311,6 +313,7 @@ export default function Guestbook() {
             name="name"
             type="text"
             required
+            defaultValue={guestName || ''}
             placeholder={t('guestbook.name')}
             className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-sm text-charcoal placeholder:text-charcoal-muted/40 transition-colors focus:border-gold focus:outline-none"
           />

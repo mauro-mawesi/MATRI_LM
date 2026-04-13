@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { useInviteCode } from '../../hooks/useInviteCode';
 import { rsvpSchema } from '../../lib/rsvp-schema';
 import RsvpConfirmation from './RsvpConfirmation';
 import { authedFetch } from '../../lib/authed-fetch';
 
 export default function RsvpForm() {
   const { t } = useLanguage();
+  const { guestName } = useInviteCode();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -19,9 +21,10 @@ export default function RsvpForm() {
     setFormErrors({});
 
     const formData = new FormData(e.currentTarget);
+    const phoneRaw = (formData.get('phone') as string || '').replace(/[\s\-()]/g, '');
     const raw = {
       name: formData.get('name') as string,
-      email: formData.get('email') as string,
+      phone: phoneRaw,
       attending,
       guests: Number(formData.get('guests') || 0),
       dietary: (formData.get('dietary') as string) || '',
@@ -115,6 +118,7 @@ export default function RsvpForm() {
             name="name"
             type="text"
             required
+            defaultValue={guestName || ''}
             className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal transition-colors focus:border-gold focus:outline-none sm:text-sm"
           />
           {formErrors.name && <p className="mt-1 font-body text-xs text-rose">{formErrors.name}</p>}
@@ -127,17 +131,18 @@ export default function RsvpForm() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
         >
-          <label htmlFor="rsvp-email" className="font-body mb-2 block text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
-            {t('rsvp.email')}
+          <label htmlFor="rsvp-phone" className="font-body mb-2 block text-xs font-light uppercase tracking-[0.2em] text-charcoal-muted">
+            {t('rsvp.phone')}
           </label>
           <input
-            id="rsvp-email"
-            name="email"
-            type="email"
+            id="rsvp-phone"
+            name="phone"
+            type="tel"
             required
-            className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal transition-colors focus:border-gold focus:outline-none sm:text-sm"
+            placeholder={t('rsvp.phone.placeholder')}
+            className="w-full border-b border-gold/20 bg-transparent px-1 py-3 font-body text-base text-charcoal placeholder:text-charcoal-muted/40 transition-colors focus:border-gold focus:outline-none sm:text-sm"
           />
-          {formErrors.email && <p className="mt-1 font-body text-xs text-rose">{formErrors.email}</p>}
+          {formErrors.phone && <p className="mt-1 font-body text-xs text-rose">{formErrors.phone}</p>}
         </motion.div>
 
         {/* Attending - scales in */}
